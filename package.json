@@ -1,0 +1,27 @@
+{
+  "name": "zlibt",
+  "version": "0.0.1",
+  "description": "zlibjs customize for typescript",
+  "main": "zlib_and_gzip.min.js",
+  "types": "zlib_and_gzip.min.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MadfishDT/zlibt.git"
+  },
+  "keywords": [
+    "zlib",
+    "gzip",
+    "zip",
+    "js",
+    "typescript"
+  ],
+  "author": "MadfishDT",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MadfishDT/zlibt/issues"
+  },
+  "homepage": "https://github.com/MadfishDT/zlibt#readme"
+}
