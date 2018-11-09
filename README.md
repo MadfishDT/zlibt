@@ -43,7 +43,7 @@ import { Zlib } from 'zlibt';
 * Zlib JavaScript
 
 ```
-var  Zlib = require('zlibt');
+var  Zlib = require('zlibt').Zlib;
 
     //compress
     var datas = [1, 2, 3, 4, 5, 6];
@@ -92,7 +92,7 @@ import { Zlib } from 'zlibt';
 
 * GZip JavaScript
 ```
-import { Zlib } from 'zlibt';
+var  Zlib = require('zlibt').Zlib;
 
     //compress
     var gzip = new Zlib.Gzip(plain);
