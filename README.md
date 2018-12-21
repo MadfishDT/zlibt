@@ -19,10 +19,32 @@ npm inatall zlibt
     * inflate.min.js: ZLIB Inflate
     * deflate.min.js: ZLIB Deflate
     * inflate_stream.min.js: ZLIB Inflate (stream mode)
+    * command line argument support(~0.0.2)
 
 **dependency:**
 -
-there is no dependencies
+* APIS
+    * there is no dependencies
+
+* CLI
+    * fs
+    * path
+
+**Command Line Interface**
+-
+
+### CLI switch
+
+```
+zlibt {{command}} {{inputFilePath}} {{outFilePath}} 
+```
+
+| switch   |      value      |  default |
+|----------|:-------------:  |------:   |
+| command  |  'c', 'u'          | c: compress, u:uncompress|
+| inputFilePath  |  "./xxxxx/zzz.json"           |   "" |
+| outFilePath | "./xxxxx/zzz.z" |""|
+
 
 **ZLib APIS**
 -
