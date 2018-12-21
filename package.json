@@ -1,6 +1,6 @@
 {
   "name": "zlibt",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "zlibjs customize for typescript",
   "main": "zlib_and_gzip.min.js",
   "bin" : "nodebin/bin.js",
@@ -24,5 +24,5 @@
   "bugs": {
     "url": "https://github.com/MadfishDT/zlibt/issues"
   },
-  "homepage": "https://github.com/MadfishDT/zlibt#readme"
+  "homepage": "https://madfishdt.github.io"
 }

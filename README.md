@@ -46,6 +46,16 @@ zlibt {{command}} {{inputFilePath}} {{outFilePath}}
 | outFilePath | "./xxxxx/zzz.z" |""|
 
 
+- example compress
+```js
+zlibt c file.txt file.txt.z
+```
+
+- example uncompress
+```js
+zlibt u file.txt.z file.txt
+```
+
 **ZLib APIS**
 -
 * Zlib TypeScript
