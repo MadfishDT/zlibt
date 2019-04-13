@@ -118,7 +118,7 @@ import { Zlib } from 'zlibt';
     const compress = deflate.compress();
 
     //decompress
-    const inflate = new Zlib.Gunzip(compress, null);
+    const inflate = new Zlib.Gunzip(compress);
     const plain = inflate.decompress();
 ```
 
