@@ -1,11 +1,10 @@
 import { USE_TYPEDARRAY } from './define/typedarray/hybrid';
-
 export let ZLIB_CRC32_COMPACT = false;
 export class CRC32 {
     constructor() {
     }
-    public static calc(data: Array<number> | Uint8Array, pos: number, length: number) {
-        this.update(data, 0, pos, length);
+    public static calc(data: Array<number> | Uint8Array, pos?: number, length?: number) {
+        return this.update(data, 0, pos, length);
     }
     public static update = function(data: Array<number> | Uint8Array, crc: number, pos: number, length: number) {
         let table = CRC32.Table;

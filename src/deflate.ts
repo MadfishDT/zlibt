@@ -1,18 +1,19 @@
 import { USE_TYPEDARRAY } from './define/typedarray/hybrid';
-import { ZlibT } from './zlibt';
-import { Zlib } from 'zlibt';
+import { RawDeflate } from './rawdeflate';
+import { Adler32 } from './adler32';
+import { CompressionMethod } from './zlib';
 
     export class Deflate {
         public static compress(input: Array<number> | Uint8Array, opt_params: any) {
             return (new Deflate(input, opt_params)).compress();
         }
         public static DefaultBufferSize = 0x8000;
-        public static CompressionType = ZlibT.RawDeflate.CompressionType;
+        public static CompressionType = RawDeflate.CompressionType;
         
         private input: Array<number> | Uint8Array;
         private output: Array<number> | Uint8Array;
         private compressionType: number;
-        private rawDeflate: ZlibT.RawDeflate;
+        private rawDeflate: RawDeflate;
         private rawDeflateOption = {};
         private prop: string;
 
@@ -37,7 +38,7 @@ import { Zlib } from 'zlibt';
           
             // set raw-deflate output buffer
             this.rawDeflateOption['outputBuffer'] = this.output;
-            this.rawDeflate = new ZlibT.RawDeflate(this.input, this.rawDeflateOption);
+            this.rawDeflate = new RawDeflate(this.input, this.rawDeflateOption);
         }
         public compress() {
             /** @type {Zlib.CompressionMethod} */
@@ -68,10 +69,10 @@ import { Zlib } from 'zlibt';
             output = this.output;
 
             // Compression Method and Flags
-            cm = ZlibT.CompressionMethod.DEFLATE;
+            cm = CompressionMethod.DEFLATE;
             switch (cm) {
-                case ZlibT.CompressionMethod.DEFLATE:
-                cinfo = Math.LOG2E * Math.log(ZlibT.RawDeflate.WindowSize) - 8;
+                case CompressionMethod.DEFLATE:
+                cinfo = Math.LOG2E * Math.log(RawDeflate.WindowSize) - 8;
                 break;
                 default:
                 throw new Error('invalid compression method');
@@ -82,7 +83,7 @@ import { Zlib } from 'zlibt';
             // Flags
             fdict = 0;
             switch (cm) {
-                case ZlibT.CompressionMethod.DEFLATE:
+                case CompressionMethod.DEFLATE:
                 switch (this.compressionType) {
                     case Deflate.CompressionType.NONE: flevel = 0; break;
                     case Deflate.CompressionType.FIXED: flevel = 1; break;
@@ -99,7 +100,7 @@ import { Zlib } from 'zlibt';
             output[pos++] = flg;
 
             // Adler-32 checksum
-            adler = ZlibT.Adler32(this.input);
+            adler = Adler32(this.input);
 
             this.rawDeflate.op = pos;
             output = this.rawDeflate.compress();
