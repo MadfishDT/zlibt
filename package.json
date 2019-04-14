@@ -3,7 +3,7 @@
   "version": "0.0.4",
   "description": "zlibjs customize for typescript",
   "main": "zlib_and_gzip.min.js",
-  "bin" : "nodebin/bin.js",
+  "bin": "nodebin/bin.js",
   "types": "zlib_and_gzip.min.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -24,5 +24,9 @@
   "bugs": {
     "url": "https://github.com/MadfishDT/zlibt/issues"
   },
-  "homepage": "https://madfishdt.github.io"
+  "homepage": "https://madfishdt.github.io",
+  "devDependencies": {
+    "tslint": "^5.15.0",
+    "typescript": "~3.1.6"
+  }
 }

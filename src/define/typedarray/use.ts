@@ -1,2 +1,2 @@
-export var USE_TYPEDARRAY = true;
+export const USE_TYPEDARRAY = true;
 

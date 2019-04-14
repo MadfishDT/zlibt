@@ -1,0 +1,88 @@
+{
+  "rules": {
+    "member-access": true,
+    "member-ordering": [
+      false
+    ],
+    "no-any": false,
+    "no-inferrable-types": false,
+    "no-internal-module": true,
+    "no-var-requires": false,
+    "typedef": [
+      true,
+      "parameter",
+      "property-declaration"
+    ],
+    "typedef-whitespace": [
+      true,
+      {
+     
+      },
+      {
+        "call-signature": "onespace",
+        "index-signature": "onespace",
+        "parameter": "onespace",
+        "property-declaration": "onespace",
+        "variable-declaration": "onespace"
+      }
+    ],
+    "ban": false,
+    "curly": true,
+    "forin": true,
+    "label-position": true,
+    "no-arg": true,
+    "no-bitwise": false,
+    "no-conditional-assignment": true,
+    "no-console": [
+      false
+    ],
+    "no-construct": true,
+    "no-debugger": false,
+    "no-duplicate-key": true,
+    "no-duplicate-variable": true,
+    "no-empty": false,
+    "no-eval": true,
+    "no-shadowed-variable": true,
+    "no-string-literal": false,
+    "no-switch-case-fall-through": true,
+    "no-unreachable": true,
+    "no-unused-expression": true,
+    "no-unused-variable": true,
+    "no-use-before-declare": true,
+    "no-var-keyword": true,
+    "radix": true,
+    "switch-default": true,
+    "triple-equals": true,
+    "eofline": true,
+    "indent": [
+      true,
+      "spaces"
+    ],
+    "no-require-imports": false,
+    "sort-object-literal-keys": true,
+    "no-trailing-comma": true,
+    "align": [
+      true
+    ],
+    "class-name": true,
+    "interface-name": [
+      true,
+      "always-prefix"
+    ],
+    "no-consecutive-blank-lines": true,
+    "one-line": [
+      true
+    ],
+    "quotemark": [
+      true,
+      "single",
+      "avoid-escape"
+    ],
+    "variable-name": [
+      false
+    ],
+    "whitespace": [
+      true
+    ]
+  }
+}
