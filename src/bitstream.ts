@@ -41,7 +41,7 @@ export class BitStream {
         }
       }
 
-    public writeBits(number: number, n: number, reverse: number) {
+    public writeBits(number: number, n: number, reverse?: boolean) {
         let buffer = this.buffer;
         let index = this.index;
         let bitindex =this.bitindex;
@@ -49,11 +49,11 @@ export class BitStream {
         let current = buffer[index];
         let i;
 
-        const rev32_ = (n) => {
-            return (BitStream.ReverseTable[n & 0xFF] << 24) |
-            (BitStream.ReverseTable[n >>> 8 & 0xFF] << 16) |
-            (BitStream.ReverseTable[n >>> 16 & 0xFF] << 8) |
-            BitStream.ReverseTable[n >>> 24 & 0xFF];
+        const rev32_ = ( num: number) => {
+            return (BitStream.ReverseTable[num & 0xFF] << 24) |
+            (BitStream.ReverseTable[num >>> 8 & 0xFF] << 16) |
+            (BitStream.ReverseTable[num >>> 16 & 0xFF] << 8) |
+            BitStream.ReverseTable[num >>> 24 & 0xFF];
         }
 
         if (reverse && n > 1) {
@@ -86,7 +86,7 @@ export class BitStream {
         this.buffer = buffer;
         this.bitindex = bitindex;
         this.index = index;
-        };
+    }
    
     public finish () {
         let buffer = this.buffer;

@@ -1,6 +1,6 @@
 import { USE_TYPEDARRAY } from './define/typedarray/hybrid';
 
-class Heap {
+export class Heap {
     
     public buffer: Uint16Array | Array<number>;
     public length: number;
