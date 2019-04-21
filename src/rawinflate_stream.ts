@@ -51,12 +51,12 @@ export class RawInflateStream {
 
     public static MaxCopyLength = 258;
 
-    public static get Order() {
+    public static Order = (()=>{
         let table = [16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15];
         return USE_TYPEDARRAY ? new Uint16Array(table) : table;
-    };
+    })();
 
-    public static get LengthCodeTable (){
+    public static LengthCodeTable = (() => {
         const table = [
             0x0003, 0x0004, 0x0005, 0x0006, 0x0007, 0x0008, 0x0009, 0x000a, 0x000b,
             0x000d, 0x000f, 0x0011, 0x0013, 0x0017, 0x001b, 0x001f, 0x0023, 0x002b,
@@ -64,17 +64,17 @@ export class RawInflateStream {
             0x00e3, 0x0102, 0x0102, 0x0102
         ]
         return USE_TYPEDARRAY ? new Uint16Array(table) : table;
-    };
+    })();
     
-    public static get LengthExtraTable() {
+    public static LengthExtraTable = (() => {
         const table = [
             0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5,
             5, 5, 0, 0, 0
         ]
         return USE_TYPEDARRAY ? new Uint8Array(table) : table;
-    };
+    })();
 
-    public static get DistCodeTable() {
+    public static DistCodeTable = (() => {
         let table = [
             0x0001, 0x0002, 0x0003, 0x0004, 0x0005, 0x0007, 0x0009, 0x000d, 0x0011,
             0x0019, 0x0021, 0x0031, 0x0041, 0x0061, 0x0081, 0x00c1, 0x0101, 0x0181,
@@ -82,20 +82,19 @@ export class RawInflateStream {
             0x3001, 0x4001, 0x6001
         ]
         return USE_TYPEDARRAY ? new Uint16Array(table) : table;
-    }
+    })();
 
-    public static get DistExtraTable() {
+    public static DistExtraTable = (() => {
         const table = [
             0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11,
             11, 12, 12, 13, 13
         ]
         return USE_TYPEDARRAY ? new Uint8Array(table) : table;
-    }
+    })();
 
-    public static get FixedLiteralLengthTable (){
+    public static FixedLiteralLengthTable = (() => {
         let lengths = new (USE_TYPEDARRAY ? Uint8Array : Array)(288);
         let i, il;
-      
         for (i = 0, il = lengths.length; i < il; ++i) {
           lengths[i] =
             (i <= 143) ? 8 :
@@ -103,10 +102,10 @@ export class RawInflateStream {
             (i <= 279) ? 7 :
             8;
         }
-      
         return buildHuffmanTable(lengths)
-    }
-    public static get FixedDistanceTable() {
+    })();
+
+    public static FixedDistanceTable = (() => {
         let lengths = new (USE_TYPEDARRAY ? Uint8Array : Array)(30);
         let i, il;
       
@@ -115,7 +114,7 @@ export class RawInflateStream {
         }
       
         return buildHuffmanTable(lengths);
-    }
+    })();
 
     constructor (input: Uint8Array | Array<number>, ip: number, opt_buffersize: number) {
          /** @type {!Array.<(Array|Uint8Array)>} */
