@@ -3,7 +3,9 @@ import { RawDeflate as rRawDeflate} from './rawdeflate';
 import { CRC32 as rCRC32 } from './crc32';
 import { Heap as rHeap } from './heap';
 import { Huffman as rHuffman } from './huffman';
-import { Zip ad rZip } from './zip';
+import { Zip as rZip } from './zip';
+import { RawInflate as rRawInflate } from './rawinflate';
+
 export namespace ZlibT {
     export const Adler32 = rAdler32;
     export class Alder extends rAdler {};
@@ -14,6 +16,8 @@ export namespace ZlibT {
         DEFLATE: 8,
         RESERVED: 15
     };
-    export class Zip extens rZip {};
+    export class Zip extends rZip {};
+    export class RawInflate extends rRawInflate {};
+    
     export class Huffman extends rHuffman{}; 
 }

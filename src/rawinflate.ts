@@ -6,7 +6,7 @@ enum rBufferType {
     BLOCK= 0,
     ADAPTIVE= 1
 };
-class RawInflate{
+export class RawInflate{
     public static ZLIB_RAW_INFLATE_BUFFER_SIZE = 0x8000; 
     public static buildHuffmanTable = ZlibT.Huffman.buildHuffmanTable;
     public static BufferType = rBufferType;
