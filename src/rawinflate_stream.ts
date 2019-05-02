@@ -116,7 +116,7 @@ export class RawInflateStream {
         return buildHuffmanTable(lengths);
     })();
 
-    constructor (input: Uint8Array | Array<number>, ip: number, opt_buffersize: number) {
+    constructor (input: Uint8Array | Array<number>, ip?: number, opt_buffersize?: number) {
          /** @type {!Array.<(Array|Uint8Array)>} */
         this.blocks = [];
         /** @type {number} block size. */

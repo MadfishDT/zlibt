@@ -1,13 +1,14 @@
 import { CompressionMethod } from './zlib';
-import { Adler32 } from './adler32';
+import { ZlibT } from './zlibt';
+
 export class Inflate {
 
     public input: Uint8Array | Array<number>;
     public ip: number;
-    public rawinflate: RawInflate;
+    public rawinflate: ZlibT.RawInflate;
     public verify: boolean | undefined;
     public method: CompressionMethod;
-    public static BufferType = RawInflate.BufferType;
+    public static BufferType = ZlibT.RawInflate.BufferType;
     constructor(input: Array<number> | Uint8Array, opt_params: any) {
 
         let cmf: number;
@@ -49,7 +50,7 @@ export class Inflate {
         }
     
         // RawInflate
-        this.rawinflate = new RawInflate(input, {
+        this.rawinflate = new ZlibT.RawInflate(input, {
         'index': this.ip,
         'bufferSize': opt_params['bufferSize'],
         'bufferType': opt_params['bufferType'],
@@ -74,7 +75,7 @@ export class Inflate {
             input[this.ip++] << 8 | input[this.ip++]
           ) >>> 0;
       
-          if (adler32 !== Adler32(buffer)) {
+          if (adler32 !== ZlibT.Adler32(buffer)) {
             throw new Error('invalid adler-32 checksum');
           }
         }

@@ -1,12 +1,12 @@
 import { CompressionMethod } from './zlib';
 import { USE_TYPEDARRAY } from './define/typedarray/hybrid';
-import { RawInflateStream } from './rawinflatestream';
+import { ZlibT } from './zlibt';
 export class InflateStream {
 
     public input: Array<number> | Uint8Array;
     public output: Array<number> | Uint8Array;
     public ip: number;
-    public rawinflate: RawInflateStream;
+    public rawinflate: ZlibT.RawInflateStream;
     public method: CompressionMethod;;
 
     constructor(input: Array<number> | Uint8Array) {
@@ -15,7 +15,7 @@ export class InflateStream {
     /** @type {number} */
     this.ip = 0;
     /** @type {Zlib.RawInflateStream} */
-    this.rawinflate = new RawInflateStream(this.input, this.ip);
+    this.rawinflate = new ZlibT.RawInflateStream(this.input, this.ip);
     /** @type {Zlib.CompressionMethod} */
     this.output = this.rawinflate.output;
   }

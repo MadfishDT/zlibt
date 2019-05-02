@@ -40,36 +40,38 @@ export class FileHeader{
 
 export class LocalFileHeader{
 
-     /** @type {!(Array.<number>|Uint8Array)} */
-     public input: Array<number> | Uint8Array;
-     /** @type {number} */
-     public offset: number;
-     /** @type {number} */
-     public length: number;
-     /** @type {number} */
-     public needVersion: number;
-     /** @type {number} */
-     public flags: number;
-     /** @type {number} */
-     public compression: number;
-     /** @type {number} */
-     public time: number;
-     /** @type {number} */
-     public date: number;
-     /** @type {number} */
-     public crc32: number;
-     /** @type {number} */
-     public compressedSize: number;
-     /** @type {number} */
-     public plainSize: number;
-     /** @type {number} */
-     public fileNameLength: number;
-     /** @type {number} */
-     public extraFieldLength: number;
-     /** @type {string} */
-     public filename: string;
-     /** @type {!(Array.<number>|Uint8Array)} */
-     public extraField: Array<number>|Uint8Array;
+    /** @type {!(Array.<number>|Uint8Array)} */
+    public input: Array<number> | Uint8Array;
+    /** @type {number} */
+    public offset: number;
+    /** @type {number} */
+    public length: number;
+    /** @type {number} */
+    public needVersion: number;
+    /** @type {number} */
+    public flags: number;
+    /** @type {number} */
+    public compression: number;
+    /** @type {number} */
+    public time: number;
+    /** @type {number} */
+    public date: number;
+    /** @type {number} */
+    public crc32: number;
+    /** @type {number} */
+    public compressedSize: number;
+    /** @type {number} */
+    public plainSize: number;
+    /** @type {number} */
+    public fileNameLength: number;
+    /** @type {number} */
+    public extraFieldLength: number;
+    /** @type {string} */
+    public filename: string;
+    /** @type {!(Array.<number>|Uint8Array)} */
+    public extraField: Array<number>|Uint8Array;
+
+    public static Flags = ZlibT.Zip.Flags;
 
     constructor(input: Array<number> | Uint8Array, ip: number) {
         this.input = input;
@@ -119,7 +121,8 @@ export class Unzip{
     public static CompressionMethod = ZlibT.Zip.CompressionMethod;
     public static FileHeaderSignature = ZlibT.Zip.FileHeaderSignature;
     public static LocalFileHeaderSignature = ZlibT.Zip.LocalFileHeaderSignature;
-    public static CentralDirectorySignature = Zlib.Zip.CentralDirectorySignature;
+    public static CentralDirectorySignature = ZlibT.Zip.CentralDirectorySignature;
+
     constructor(input: Array<number> | Uint8Array, opt_params: any) {
         opt_params = opt_params || {};
         /** @type {!(Array.<number>|Uint8Array)} */
@@ -477,6 +480,6 @@ export class Unzip{
 
     public updateKeys = ZlibT.Zip.updateKeys;
     public createDecryptionKey = ZlibT.Zip.createEncryptionKey;
-    public getByte = ZlibT.getByte;
+    public getByte = ZlibT.Zip.getByte;
       
 }

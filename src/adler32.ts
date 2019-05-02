@@ -1,4 +1,3 @@
-
 export class Alder {
     public static OptimizationParameter = 1024;
     constructor() {

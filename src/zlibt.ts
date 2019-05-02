@@ -5,6 +5,7 @@ import { Heap as rHeap } from './heap';
 import { Huffman as rHuffman } from './huffman';
 import { Zip as rZip } from './zip';
 import { RawInflate as rRawInflate } from './rawinflate';
+import { RawInflateStream as rRawInflateStream } from './rawinflate_stream';
 
 export namespace ZlibT {
     export const Adler32 = rAdler32;
@@ -12,6 +13,7 @@ export namespace ZlibT {
     export class RawDeflate extends rRawDeflate {};
     export class CRC32 extends rCRC32 {};
     export class Heap extends rHeap{};
+    export class RawInflateStream extends rRawInflateStream{};
     export const CompressionMethod = {
         DEFLATE: 8,
         RESERVED: 15
