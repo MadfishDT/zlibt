@@ -1,21 +1,21 @@
 import { CompressionMethod } from './zlib';
 import { USE_TYPEDARRAY } from './define/typedarray/hybrid';
-import { ZlibT } from './zlibt';
+import { RawInflateStream } from './zlibt';
 export class InflateStream {
 
     public input: Array<number> | Uint8Array;
     public output: Array<number> | Uint8Array;
     public ip: number;
-    public rawinflate: ZlibT.RawInflateStream;
+    public rawinflate: RawInflateStream;
     public method: CompressionMethod;;
 
     constructor(input: Array<number> | Uint8Array) {
     /** @type {!(Uint8Array|Array)} */
-    this.input = input === void 0 ? new (USE_TYPEDARRAY ? Uint8Array : Array)() : input;
+    this.input = input === void 0 ? new (USE_TYPEDARRAY ? Uint8Array : Array)(null) : input;
     /** @type {number} */
     this.ip = 0;
     /** @type {Zlib.RawInflateStream} */
-    this.rawinflate = new ZlibT.RawInflateStream(this.input, this.ip);
+    this.rawinflate = new RawInflateStream(this.input, this.ip);
     /** @type {Zlib.CompressionMethod} */
     this.output = this.rawinflate.output;
   }
@@ -23,11 +23,6 @@ export class InflateStream {
   public decompress(input) {
     /** @type {!(Uint8Array|Array)} inflated buffer. */
     let buffer;
-    /** @type {number} adler-32 checksum */
-    let adler32;
-  
-    // 新しい入力を入力バッファに結合する
-    // XXX Array, Uint8Array のチェックを行うか確認する
     if (input !== void 0) {
       if (USE_TYPEDARRAY) {
         let tmp = new Uint8Array(this.input.length + input.length);
@@ -41,7 +36,7 @@ export class InflateStream {
   
     if (this.method === void 0) {
       if(this.readHeader() < 0) {
-        return new (USE_TYPEDARRAY ? Uint8Array : Array)();
+        return new (USE_TYPEDARRAY ? Uint8Array : Array)(null);
       }
     }
   

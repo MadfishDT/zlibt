@@ -1,17 +1,16 @@
-
 import { GunzipMember } from './gunzip_member';
 import { Gzip } from './gzip';
 import { CRC32 } from './crc32';
 import { RawInflate } from './rawinflate';
 import { USE_TYPEDARRAY } from './define/typedarray/hybrid'
 
-class Gunzip {
+export class Gunzip {
     public input: Array<number> | Uint8Array;
     public ip: number;
     public member = [];
     public decompressed: boolean;
 
-    constructor(input: Array<number> | Uint8Array, opt_params: any) {
+    constructor(input: Array<number> | Uint8Array) {
     this.input = input;
     this.ip = 0;
     this.member = [];

@@ -1,11 +1,7 @@
 
-import { ZlibT } from './zlibt';
+import { Zip, RawInflate, CRC32 } from './zlibt';
 import { USE_TYPEDARRAY } from './define/typedarray/hybrid';
-/**
- * @param {!(Array.<number>|Uint8Array)} input input buffer.
- * @param {Object=} opt_params options.
- * @constructor
- */
+
 export class FileHeader{
     public input: Array<number> | Uint8Array;
     public offset: number;
@@ -35,7 +31,7 @@ export class FileHeader{
         this.input = input;
         this.offset = ip;
     }
-    public static Flags = ZlibT.Zip.Flags;
+    public static Flags = Zip.Flags;
 }
 
 export class LocalFileHeader{
@@ -71,7 +67,7 @@ export class LocalFileHeader{
     /** @type {!(Array.<number>|Uint8Array)} */
     public extraField: Array<number>|Uint8Array;
 
-    public static Flags = ZlibT.Zip.Flags;
+    public static Flags = Zip.Flags;
 
     constructor(input: Array<number> | Uint8Array, ip: number) {
         this.input = input;
@@ -118,10 +114,10 @@ export class Unzip{
     public extraField: Array<number> | Uint8Array;
     public length: number;
 
-    public static CompressionMethod = ZlibT.Zip.CompressionMethod;
-    public static FileHeaderSignature = ZlibT.Zip.FileHeaderSignature;
-    public static LocalFileHeaderSignature = ZlibT.Zip.LocalFileHeaderSignature;
-    public static CentralDirectorySignature = ZlibT.Zip.CentralDirectorySignature;
+    public static CompressionMethod = Zip.CompressionMethod;
+    public static FileHeaderSignature = Zip.FileHeaderSignature;
+    public static LocalFileHeaderSignature = Zip.LocalFileHeaderSignature;
+    public static CentralDirectorySignature = Zip.CentralDirectorySignature;
 
     constructor(input: Array<number> | Uint8Array, opt_params: any) {
         opt_params = opt_params || {};
@@ -341,7 +337,7 @@ export class Unzip{
         this.filenameToIndex = filetable;
     }
 
-    public getFileData(index, opt_params) {
+    public getFileData(index: number, opt_params: any) {
         opt_params = opt_params || {};
         /** @type {!(Array.<number>|Uint8Array)} */
         let input = this.input;
@@ -405,7 +401,7 @@ export class Unzip{
               this.input.slice(offset, offset + length);
             break;
           case Unzip.CompressionMethod.DEFLATE:
-            buffer = new ZlibT.RawInflate(this.input, {
+            buffer = new RawInflate(this.input, {
               'index': offset,
               'bufferSize': localFileHeader.plainSize
             }).decompress();
@@ -415,7 +411,7 @@ export class Unzip{
         }
       
         if (this.verify) {
-          crc32 = ZlibT.CRC32.calc(buffer);
+          crc32 = CRC32.calc(buffer);
           if (localFileHeader.crc32 !== crc32) {
             throw new Error(
               'wrong crc: file=0x' + localFileHeader.crc32.toString(16) +
@@ -449,7 +445,7 @@ export class Unzip{
         return filenameList;
       };
 
-    public decompress = function(filename: string, opt_params: any) {
+    public decompress(filename: string, opt_params: any) {
         /** @type {number} */
         let index;
       
@@ -472,14 +468,14 @@ export class Unzip{
         this.password = password;
     }
 
-    public decode(key, n) {
-        n ^= this.getByte(/** @type {(Array.<number>|Uint32Array)} */(key));
-        this.updateKeys(/** @type {(Array.<number>|Uint32Array)} */(key), n);
+    public decode(key: Array<number>|Uint32Array, n: number) {
+        n ^= this.getByte(key);
+        this.updateKeys(key, n);
         return n;
     };
 
-    public updateKeys = ZlibT.Zip.updateKeys;
-    public createDecryptionKey = ZlibT.Zip.createEncryptionKey;
-    public getByte = ZlibT.Zip.getByte;
+    public updateKeys = Zip.updateKeys;
+    public createDecryptionKey = Zip.createEncryptionKey;
+    public getByte = Zip.getByte;
       
 }

@@ -2,9 +2,9 @@ import { USE_TYPEDARRAY } from './define/typedarray/hybrid';
 
 export class BitStream {
     public static DefaultBlockSize = 0x8000;
-    public index: number;
-    public bitindex: number;
-    public buffer: any;
+    private index: number;
+    private bitindex: number;
+    private buffer: any;
     public static ReverseTable: Uint8Array | any[];
 
     constructor(buffer: Uint8Array | Array<any>, bufferPosition: number) {
@@ -26,7 +26,6 @@ export class BitStream {
         let oldbuf = this.buffer;
         let i = 0;
         let il = oldbuf.length;
-        let buffer: Uint8Array | Array<any> = new (USE_TYPEDARRAY ? Uint8Array : Array)(il << 1);
         // copy buffer
         if(USE_TYPEDARRAY) {
             let uint8Buffer = new Uint8Array(il << 1);

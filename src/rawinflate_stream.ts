@@ -1,5 +1,5 @@
 import { USE_TYPEDARRAY } from './define/typedarray/hybrid';
-import { ZlibT } from './zlibt';
+import { Huffman } from './zlibt';
 
 const ZLIB_STREAM_RAW_INFLATE_BUFFER_SIZE = 0x8000;
 
@@ -19,7 +19,7 @@ enum rBlockType {
     DYNAMIC= 2,
 };
 
-const buildHuffmanTable = ZlibT.Huffman.buildHuffmanTable;
+const buildHuffmanTable = Huffman.buildHuffmanTable;
 
 export class RawInflateStream {
 
@@ -453,10 +453,6 @@ export class RawInflateStream {
           new (USE_TYPEDARRAY ? Uint8Array : Array)(RawInflateStream.Order.length);
         /** @type {!Array} code lengths table. */
         let codeLengthsTable;
-        /** @type {!(Uint32Array|Array)} literal and length code lengths. */
-        let litlenLengths;
-        /** @type {!(Uint32Array|Array)} distance code lengths. */
-        let distLengths;
       
         this.status = RawInflateStream.Status.BLOCK_BODY_START;
       
@@ -531,13 +527,6 @@ export class RawInflateStream {
                 break;
             }
           }
-      
-          // literal and length code
-          litlenLengths = new (USE_TYPEDARRAY ? Uint8Array : Array)(hlit);
-      
-          // distance code
-          distLengths = new (USE_TYPEDARRAY ? Uint8Array : Array)(hdist);
-      
           this.litlenTable = USE_TYPEDARRAY
             ? buildHuffmanTable(lengthTable.subarray(0, hlit))
             : buildHuffmanTable(lengthTable.slice(0, hlit));

@@ -1,14 +1,14 @@
 
 import { USE_TYPEDARRAY } from './define/typedarray/hybrid';
-import { ZlibT } from './zlibt';
+import { Huffman } from './zlibt';
 
 enum rBufferType {
     BLOCK= 0,
     ADAPTIVE= 1
 };
 export class RawInflate{
-    public static ZLIB_RAW_INFLATE_BUFFER_SIZE = 0x8000; 
-    public static buildHuffmanTable = ZlibT.Huffman.buildHuffmanTable;
+    public static ZLIB_RAW_INFLATE_BUFFER_SIZE = 0x8000;
+    public static buildHuffmanTable = Huffman.buildHuffmanTable;
     public static BufferType = rBufferType;
 
     public static MaxBackwardLength = 32768;
@@ -68,7 +68,7 @@ export class RawInflate{
         return RawInflate.buildHuffmanTable(lengths)
     })();
 
-    public static FixedDistanceTable = ((table) => {
+    public static FixedDistanceTable = (() => {
         let lengths = new (USE_TYPEDARRAY ? Uint8Array : Array)(30);
         let i, il;
       
@@ -96,30 +96,21 @@ export class RawInflate{
     public bufferType = RawInflate.BufferType.ADAPTIVE;
     /** @type {boolean} resize flag for memory size optimization. */
     public resize = false;
+
     constructor(input: Uint8Array | Array<number>, opt_params: any) {
-        /** @type {!Array.<(Array.<number>|Uint8Array)>} */
         this.blocks = [];
-        /** @type {number} block size. */
         this.bufferSize = RawInflate.ZLIB_RAW_INFLATE_BUFFER_SIZE;
-        /** @type {!number} total output buffer pointer. */
         this.totalpos = 0;
-        /** @type {!number} input buffer pointer. */
         this.ip = 0;
-        /** @type {!number} bit stream reader buffer. */
         this.bitsbuf = 0;
-        /** @type {!number} bit stream reader buffer size. */
         this.bitsbuflen = 0;
-        /** @type {!(Array.<number>|Uint8Array)} input buffer. */
         this.input = USE_TYPEDARRAY ? new Uint8Array(input) : input;
-        /** @type {boolean} is final block flag. */
         this.bfinal = false;
-        /** @type {Zlib.RawInflate.BufferType} buffer management. */
         this.bufferType = RawInflate.BufferType.ADAPTIVE;
-        /** @type {boolean} resize flag for memory size optimization. */
         this.resize = false;
     
     // option parameters
-        if (opt_params || !(opt_params = {})) {
+        if (opt_params) {
             if (opt_params['index']) {
             this.ip = opt_params['index'];
             }
@@ -196,7 +187,7 @@ export class RawInflate{
             throw new Error('unknown BTYPE: ' + hdr);
         }
     }
-    public readBits(length) {
+    public readBits(length: number) {
         let bitsbuf = this.bitsbuf;
         let bitsbuflen = this.bitsbuflen;
         let input = this.input;
@@ -230,7 +221,7 @@ export class RawInflate{
         return octet;
     }
 
-    public readCodeByTable(table) {
+    public readCodeByTable(table: Array<number> | Uint16Array | Uint8Array) {
         let bitsbuf = this.bitsbuf;
         let bitsbuflen = this.bitsbuflen;
         let input = this.input;
@@ -596,7 +587,7 @@ export class RawInflate{
         }
         this.op = op;
     }
-    public expandBufferBlock(opt_param?: any) {
+    public expandBufferBlock() {
         /** @type {!(Array.<number>|Uint8Array)} store buffer. */
         let buffer =
           new (USE_TYPEDARRAY ? Uint8Array : Array)(

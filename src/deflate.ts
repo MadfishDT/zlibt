@@ -14,9 +14,8 @@ import { CompressionMethod } from './zlib';
         private output: Array<number> | Uint8Array;
         private compressionType: number;
         private rawDeflate: RawDeflate;
-        private rawDeflateOption = {};
-        private prop: string;
-
+        private rawDeflateOption: any = {};
+       
         constructor(input: Array<number> | Uint8Array, opt_params: any) {
             this.input = input;
             this.output =
@@ -56,11 +55,7 @@ import { CompressionMethod } from './zlib';
             /** @type {number} */
             let flevel;
             /** @type {number} */
-            let clevel;
-            /** @type {number} */
             let adler;
-            /** @type {boolean} */
-            let error = false;
             /** @type {!(Array|Uint8Array)} */
             let output;
             /** @type {number} */
@@ -127,4 +122,3 @@ import { CompressionMethod } from './zlib';
             return output;
         }
     }
-

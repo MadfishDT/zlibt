@@ -1,6 +1,6 @@
 import { USE_TYPEDARRAY } from './define/typedarray/hybrid';
 import { BitStream } from './bitstream';
-import { ZlibT } from './zlibt';
+import { Heap } from './zlibt';
 
 enum gCompressionType {
     NONE= 0,
@@ -18,7 +18,7 @@ export class Lz77Match {
     }
 
     static get LengthCodeTable() {
-        const code  = (length) => {
+        const code  = (length: number) => {
             switch (true) {
               case (length === 3): return [257, length - 3, 0]; break;
               case (length === 4): return [258, length - 4, 0]; break;
@@ -156,10 +156,11 @@ export class RawDeflate {
     constructor(input: Array<number> | Uint8Array, opt_params: any) {
         this.compressionType = RawDeflate.CompressionType.DYNAMIC;
         this.lazy = 0;
+        this.length = 0;
+        this.backwardDistance = 0;
         this.input =
         (USE_TYPEDARRAY && input instanceof Array) ? new Uint8Array(input) : input;
         this.op = 0;
-
         // option parameters
         if (opt_params) {
             if (opt_params['lazy']) {
@@ -507,55 +508,30 @@ export class RawDeflate {
         return stream;
     }
     public lz77(dataArray: Array<number>|Uint8Array) {
-        /** @type {number} input position */
-        let position;
-        /** @type {number} input length */
-        let length;
-        /** @type {number} loop counter */
-        let i;
-        /** @type {number} loop limiter */
-        let il;
-        /** @type {number} chained-hash-table key */
-        let matchKey;
-        /** @type {Object.<number, Array.<number>>} chained-hash-table */
+        let position = 0;
+        let length = 0;
+        let i = 0;
+        let il = 0;
+        let matchKey = 0;
         let table = {};
-        /** @const @type {number} */
         let windowSize = RawDeflate.WindowSize;
-        /** @type {Array.<number>} match list */
-        let matchList;
-        /** @type {Zlib.RawDeflate.Lz77Match} longest match */
+        let matchList = [];
         let longestMatch;
-        /** @type {Zlib.RawDeflate.Lz77Match} previous longest match */
         let prevMatch;
-        /** @type {!(Array.<number>|Uint16Array)} lz77 buffer */
         let lz77buf = USE_TYPEDARRAY ?
-          new Uint16Array(dataArray.length * 2) : [];
-        /** @type {number} lz77 output buffer pointer */
+          new Uint16Array(dataArray.length * 2) : new Array<number>();
         let pos = 0;
-        /** @type {number} lz77 skip length */
         let skipLength = 0;
-        /** @type {!(Array.<number>|Uint32Array)} */
         let freqsLitLen = new (USE_TYPEDARRAY ? Uint32Array : Array )(286);
-        /** @type {!(Array.<number>|Uint32Array)} */
         let freqsDist = new (USE_TYPEDARRAY ? Uint32Array : Array) (30);
-        /** @type {number} */
         let lazy = this.lazy;
-        /** @type {*} temporary letiable */
         let tmp;
       
-        // 初期化
         if (!USE_TYPEDARRAY) {
           for (i = 0; i <= 285;) { freqsLitLen[i++] = 0; }
           for (i = 0; i <= 29;) { freqsDist[i++] = 0; }
         }
-        freqsLitLen[256] = 1; // EOB の最低出現回数は 1
-      
-        /**
-         * マッチデータの書き込み
-         * @param {Zlib.RawDeflate.Lz77Match} match LZ77 Match data.
-         * @param {!number} offset スキップ開始位置(相対指定).
-         * @private
-         */
+        freqsLitLen[256] = 1;
         const writeMatch = (match: Lz77Match, offset: number) => {
             let lz77Array = match.toLz77Array();
             /** @type {number} */
@@ -583,7 +559,7 @@ export class RawDeflate {
           }
       
           // テーブルが未定義だったら作成する
-          if (table[matchKey] === void 0) { table[matchKey] = []; }
+          if (table[matchKey]) { table[matchKey] = []; }
           matchList = table[matchKey];
       
           // skip
@@ -796,7 +772,7 @@ export class RawDeflate {
         /** @type {number} */
         let nSymbols = freqs.length;
         /** @type {Zlib.Heap} */
-        let heap = new ZlibT.Heap(2 * ZlibT.RawDeflate.HUFMAX);
+        let heap = new Heap(2 * RawDeflate.HUFMAX);
         /** @type {!(Array.<number>|Uint8Array)} */
         let length = new (USE_TYPEDARRAY ? Uint8Array : Array)(nSymbols);
         /** @type {Array} */
@@ -959,11 +935,11 @@ export class RawDeflate {
       
         return codeLength;
     };
-    public getCodesFromLengths_(lengths: Uint16Array | Array<number>) {
-        let codes = new (USE_TYPEDARRAY ? Uint16Array : Array)(lengths.length),
-            count = [],
-            startCode = [],
-            code = 0, i, il, j, m;
+    public getCodesFromLengths_(lengths: Uint8Array | Array<number>) {
+        let codes = new (USE_TYPEDARRAY ? Uint16Array : Array)(lengths.length);
+        let count: number[] = [];
+        let startCode: number[] = [];
+        let code = 0, i, il, j, m;
       
         // Count the codes of each length.
         for (i = 0, il = lengths.length; i < il; i++) {

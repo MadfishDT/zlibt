@@ -1,4 +1,4 @@
-import { ZlibT } from './zlibt';
+import { CRC32, RawDeflate } from './zlibt';
 import { USE_TYPEDARRAY } from './define/typedarray/hybrid';
 
 export enum CompressionMethod {
@@ -42,8 +42,6 @@ export class Zip {
 
     public addFile(input: Array<number> | Uint8Array, opt_params: any) {
         opt_params = opt_params || {};
-        /** @type {string} */
-        let filename = '' || opt_params['filename'];
         /** @type {boolean} */
         let compressed;
         /** @type {number} */
@@ -66,7 +64,7 @@ export class Zip {
             case Zip.CompressionMethod.STORE:
               break;
             case Zip.CompressionMethod.DEFLATE:
-              crc32 = ZlibT.CRC32.calc(input);
+              crc32 = CRC32.calc(input);
               input = this.deflateWithOption(input, opt_params);
               compressed = true;
               break;
@@ -161,7 +159,7 @@ export class Zip {
           // 圧縮されていなかったら圧縮
           if (!file.compressed) {
             // 圧縮前に CRC32 の計算をしておく
-            file.crc32 = ZlibT.CRC32.calc(file.buffer);
+            file.crc32 = CRC32.calc(file.buffer);
       
             switch (file.option['compressionMethod']) {
               case Zip.CompressionMethod.STORE:
@@ -464,7 +462,7 @@ export class Zip {
 
     public deflateWithOption(input: Array<number> | Uint8Array, opt_params: Object) {
         /** @type {Zlib.RawDeflate} */
-        const deflator = new ZlibT.RawDeflate(input, opt_params['deflateOption']);
+        const deflator = new RawDeflate(input, opt_params['deflateOption']);
       
         return deflator.compress();
     }
@@ -484,10 +482,10 @@ export class Zip {
     };
 
     public static updateKeys = function(key: Array<number> | Uint32Array, n: number) {
-            key[0] = ZlibT.CRC32.single(key[0], n);
+            key[0] = CRC32.single(key[0], n);
             key[1] =
             (((((key[1] + (key[0] & 0xff)) * 20173 >>> 0) * 6681) >>> 0) + 1) >>> 0;
-            key[2] = ZlibT.CRC32.single(key[2], key[1] >>> 24);
+            key[2] = CRC32.single(key[2], key[1] >>> 24);
     }
     
     public static createEncryptionKey(password: Array<number>|Uint8Array) {

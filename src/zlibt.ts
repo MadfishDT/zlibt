@@ -1,4 +1,4 @@
-import { Adler32 as rAdler32, Alder as rAdler} from './adler32';
+/*import { Adler32 as rAdler32, Alder as rAdler} from './adler32';
 import { RawDeflate as rRawDeflate} from './rawdeflate';
 import { CRC32 as rCRC32 } from './crc32';
 import { Heap as rHeap } from './heap';
@@ -22,4 +22,17 @@ export namespace ZlibT {
     export class RawInflate extends rRawInflate {};
     
     export class Huffman extends rHuffman{}; 
+}*/
+export class ZlibT {
+
 }
+export { Adler32 , Alder} from './adler32';
+export { RawDeflate } from './rawdeflate';
+export { CRC32 } from './crc32';
+export { Heap } from './heap';
+export { Huffman } from './huffman';
+export { Zip } from './zip';
+export { RawInflate } from './rawinflate';
+export { RawInflateStream } from './rawinflate_stream';
+export { Deflate } from './deflate';
+export { InflateStream } from './inflate_stream';

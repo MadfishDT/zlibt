@@ -25,6 +25,6 @@ export class Alder {
         return ((s2 << 16) | s1) >>> 0;
     }
 }
-export const Adler32 = (array) => {
+export const Adler32 = (array: any) => {
     return Alder.update(1, array);
 }
