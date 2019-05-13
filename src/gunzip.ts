@@ -34,7 +34,7 @@ export class Gunzip {
     this.decompressed = true;
     return this.concatMember();
   };
-  decodeMember() {
+  public decodeMember() {
     /** @type {Zlib.GunzipMember} */
     let member = new GunzipMember();
     /** @type {number} */
@@ -100,16 +100,20 @@ export class Gunzip {
   
     // fname
     if ((member.flg & Gzip.FlagsMask.FNAME) > 0) {
-      for(str = [], ci = 0; (c = input[ip++]) > 0;) {
+      c = input[ip];
+      for (str = [], ci = 0; c > 0;) {
         str[ci++] = String.fromCharCode(c);
+        c = input[++ip];
       }
       member.name = str.join('');
     }
   
     // fcomment
     if ((member.flg & Gzip.FlagsMask.FCOMMENT) > 0) {
-      for(str = [], ci = 0; (c = input[ip++]) > 0;) {
+      c = input[ip];
+      for(str = [], ci = 0; c > 0;) {
         str[ci++] = String.fromCharCode(c);
+        c = input[++ip];
       }
       member.comment = str.join('');
     }

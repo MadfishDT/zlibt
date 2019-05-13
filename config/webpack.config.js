@@ -18,6 +18,6 @@ module.exports = {
   },
   output: {
     filename: 'zlibt.js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, '../dist')
   }
 };

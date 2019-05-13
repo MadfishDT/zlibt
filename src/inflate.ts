@@ -8,7 +8,6 @@ export class Inflate {
     public rawinflate: RawInflate;
     public verify: boolean | undefined;
     public method: CompressionMethod;
-    public static BufferType = RawInflate.BufferType;
     constructor(input: Array<number> | Uint8Array, opt_params: any) {
 
         let cmf: number;
@@ -52,8 +51,8 @@ export class Inflate {
         // RawInflate
         this.rawinflate = new RawInflate(input, {
         'index': this.ip,
-        'bufferSize': opt_params['bufferSize'],
         'bufferType': opt_params['bufferType'],
+        'bufferSize': opt_params['bufferSize'],
         'resize': opt_params['resize']
         });
     }

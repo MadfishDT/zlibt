@@ -20,7 +20,7 @@ export class InflateStream {
     this.output = this.rawinflate.output;
   }
 
-  public decompress(input) {
+  public decompress(input: Uint8Array | Array<number>) {
     /** @type {!(Uint8Array|Array)} inflated buffer. */
     let buffer;
     if (input !== void 0) {
@@ -30,7 +30,7 @@ export class InflateStream {
         tmp.set(input, this.input.length);
         this.input = tmp;
       } else {
-        this.input = (<Array<number>>(this.input)).concat(input);
+        this.input = (<Array<number>>(this.input)).concat(<Array<number>>input);
       }
     }
   

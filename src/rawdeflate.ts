@@ -2,7 +2,7 @@ import { USE_TYPEDARRAY } from './define/typedarray/hybrid';
 import { BitStream } from './bitstream';
 import { Heap } from './zlibt';
 
-enum gCompressionType {
+export enum CompressionType {
     NONE= 0,
     FIXED= 1,
     DYNAMIC= 2,
@@ -133,8 +133,8 @@ export class Lz77Match {
 }
 export class RawDeflate {
 
-    public static CompressionType = gCompressionType; 
-    public compressionType: gCompressionType;
+    //public static CompressionType = gCompressionType; 
+    public compressionType: CompressionType;
     public lazy: number;
     public freqsLitLen: Array<any> | Uint32Array;
     public freqsDist: Array<any> | Uint32Array;
@@ -154,7 +154,7 @@ export class RawDeflate {
 
     public static Lz77MinLength = 3;
     constructor(input: Array<number> | Uint8Array, opt_params: any) {
-        this.compressionType = RawDeflate.CompressionType.DYNAMIC;
+        this.compressionType = CompressionType.DYNAMIC;
         this.lazy = 0;
         this.length = 0;
         this.backwardDistance = 0;
@@ -210,7 +210,7 @@ export class RawDeflate {
       
         // compression
         switch (this.compressionType) {
-          case RawDeflate.CompressionType.NONE:
+          case CompressionType.NONE:
             // each 65535-Byte (length header: 16-bit)
             for (position = 0, length = input.length; position < length;) {
               blockArray = USE_TYPEDARRAY ?
@@ -220,11 +220,11 @@ export class RawDeflate {
               this.makeNocompressBlock(blockArray, (position === length));
             }
             break;
-          case RawDeflate.CompressionType.FIXED:
+          case CompressionType.FIXED:
             this.output = this.makeFixedHuffmanBlock(input, true);
             this.op = this.output.length;
             break;
-          case RawDeflate.CompressionType.DYNAMIC:
+          case CompressionType.DYNAMIC:
             this.output = this.makeDynamicHuffmanBlock(input, true);
             this.op = this.output.length;
             break;
@@ -262,7 +262,7 @@ export class RawDeflate {
 
         // header
         bfinal = isFinalBlock ? 1 : 0;
-        btype = RawDeflate.CompressionType.NONE;
+        btype = CompressionType.NONE;
         output[op++] = (bfinal) | (btype << 1);
 
         // length
@@ -304,7 +304,7 @@ export class RawDeflate {
 
         // header
         bfinal = isFinalBlock ? 1 : 0;
-        btype = RawDeflate.CompressionType.FIXED;
+        btype = CompressionType.FIXED;
 
         stream.writeBits(bfinal, 1, true);
         stream.writeBits(btype, 2, true);
@@ -364,7 +364,7 @@ export class RawDeflate {
 
         // header
         bfinal = isFinalBlock ? 1 : 0;
-        btype = RawDeflate.CompressionType.DYNAMIC;
+        btype = CompressionType.DYNAMIC;
 
         stream.writeBits(bfinal, 1, true);
         stream.writeBits(btype, 2, true);

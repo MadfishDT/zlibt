@@ -1,14 +1,13 @@
 import { USE_TYPEDARRAY } from './define/typedarray/hybrid';
-import { RawDeflate } from './rawdeflate';
 import { Adler32 } from './adler32';
-import { CompressionMethod } from './zlib';
+import { CompressionMethod, RawDeflate, CompressionType } from './zlibt';
 
     export class Deflate {
         public static compress(input: Array<number> | Uint8Array, opt_params: any) {
             return (new Deflate(input, opt_params)).compress();
         }
         public static DefaultBufferSize = 0x8000;
-        public static CompressionType = RawDeflate.CompressionType;
+        //public CompressionType = RawDeflate.CompressionType;
         
         private input: Array<number> | Uint8Array;
         private output: Array<number> | Uint8Array;
@@ -20,7 +19,7 @@ import { CompressionMethod } from './zlib';
             this.input = input;
             this.output =
                         new (USE_TYPEDARRAY ? Uint8Array : Array)(Deflate.DefaultBufferSize);
-            this.compressionType = Deflate.CompressionType.DYNAMIC;
+            this.compressionType = CompressionType.DYNAMIC;
             this.rawDeflateOption = {};
             
               // option parameters
@@ -80,9 +79,9 @@ import { CompressionMethod } from './zlib';
             switch (cm) {
                 case CompressionMethod.DEFLATE:
                 switch (this.compressionType) {
-                    case Deflate.CompressionType.NONE: flevel = 0; break;
-                    case Deflate.CompressionType.FIXED: flevel = 1; break;
-                    case Deflate.CompressionType.DYNAMIC: flevel = 2; break;
+                    case CompressionType.NONE: flevel = 0; break;
+                    case CompressionType.FIXED: flevel = 1; break;
+                    case CompressionType.DYNAMIC: flevel = 2; break;
                     default: throw new Error('unsupported compression type');
                 }
                 break;
