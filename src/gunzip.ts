@@ -5,35 +5,35 @@ import { RawInflate } from './rawinflate';
 import { USE_TYPEDARRAY } from './define/typedarray/hybrid'
 
 export class Gunzip {
-    public input: Array<number> | Uint8Array;
-    public ip: number;
+    private input: Array<number> | Uint8Array;
+    private ip: number;
     public member = [];
-    public decompressed: boolean;
+    private decompressed: boolean;
 
     constructor(input: Array<number> | Uint8Array) {
-    this.input = input;
-    this.ip = 0;
-    this.member = [];
-    this.decompressed = false;
-  }
-
-  public getMembers() {
-    if (!this.decompressed) {
-      this.decompress();
+        this.input = input;
+        this.ip = 0;
+        this.member = [];
+        this.decompressed = false;
     }
-    return this.member.slice();
-  };
 
-  public decompress() {
-    let il = this.input.length;
-  
-    while (this.ip < il) {
-      this.decodeMember();
-    }
-  
-    this.decompressed = true;
-    return this.concatMember();
-  };
+    public getMembers() {
+        if (!this.decompressed) {
+        this.decompress();
+        }
+        return this.member.slice();
+    };
+
+    public decompress() {
+        let il = this.input.length;
+    
+        while (this.ip < il) {
+            this.decodeMember();
+        }
+    
+        this.decompressed = true;
+        return this.concatMember();
+    };
   public decodeMember() {
     /** @type {Zlib.GunzipMember} */
     let member = new GunzipMember();
@@ -94,8 +94,8 @@ export class Gunzip {
   
     // extra
     if ((member.flg & Gzip.FlagsMask.FEXTRA) > 0) {
-      member.xlen = input[ip++] | (input[ip++] << 8);
-      ip = this.decodeSubField(ip, member.xlen);
+        member.xlen = input[ip++] | (input[ip++] << 8);
+        ip = this.decodeSubField(ip, member.xlen);
     }
   
     // fname

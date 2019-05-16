@@ -184,26 +184,26 @@ export class RawInflateStream {
             // block body
             case RawInflateStream.Status.BLOCK_HEADER_END: /* FALLTHROUGH */
             case RawInflateStream.Status.BLOCK_BODY_START:
-              switch(this.currentBlockType) {
-                case RawInflateStream.BlockType.UNCOMPRESSED:
-                  if (this.readUncompressedBlockHeader() < 0) {
-                    stop = true;
-                  }
-                  break;
-                case RawInflateStream.BlockType.FIXED:
-                  if (this.parseFixedHuffmanBlock() < 0) {
-                    stop = true;
-                  }
-                  break;
-                case RawInflateStream.BlockType.DYNAMIC:
-                  if (this.parseDynamicHuffmanBlock() < 0) {
-                    stop = true;
-                  }
-                  break;
-                default:
-                  break;
-              }
-              break;
+                switch(this.currentBlockType) {
+                    case RawInflateStream.BlockType.UNCOMPRESSED:
+                    if (this.readUncompressedBlockHeader() < 0) {
+                        stop = true;
+                    }
+                    break;
+                    case RawInflateStream.BlockType.FIXED:
+                    if (this.parseFixedHuffmanBlock() < 0) {
+                        stop = true;
+                    }
+                    break;
+                    case RawInflateStream.BlockType.DYNAMIC:
+                    if (this.parseDynamicHuffmanBlock() < 0) {
+                        stop = true;
+                    }
+                    break;
+                    default:
+                    break;
+                }
+                break;
             // decode data
             case RawInflateStream.Status.BLOCK_BODY_END:
             case RawInflateStream.Status.DECODE_BLOCK_START:

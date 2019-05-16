@@ -9,7 +9,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon --watch src --delay 1 --exec ts-node src/zlibt.ts",
     "build": "webpack --config config/webpack.config.js",
-    "lint": "tslint --project tsconfig.json src/*"
+    "lint": "tslint --project tsconfig.json src/*",
+    "lint:fix": "tslint --project tsconfig.json src/* --fix"
   },
   "repository": {
     "type": "git",
