@@ -6,7 +6,7 @@ enum rBufferType {
     BLOCK= 0,
     ADAPTIVE= 1
 };
-export class RawInflate{
+export class RawInflate {
     public static ZLIB_RAW_INFLATE_BUFFER_SIZE = 0x8000;
     public static buildHuffmanTable = Huffman.buildHuffmanTable;
     public static BufferType = rBufferType;
@@ -64,7 +64,6 @@ export class RawInflate{
             (i <= 279) ? 7 :
             8;
         }
-      
         return RawInflate.buildHuffmanTable(lengths)
     })();
 
@@ -73,7 +72,7 @@ export class RawInflate{
         let i, il;
       
         for (i = 0, il = lengths.length; i < il; ++i) {
-          lengths[i] = 5;
+            lengths[i] = 5;
         }
       
         return RawInflate.buildHuffmanTable(lengths)
@@ -112,16 +111,16 @@ export class RawInflate{
     // option parameters
         if (opt_params) {
             if (opt_params['index']) {
-            this.ip = opt_params['index'];
+                this.ip = opt_params['index'];
             }
             if (opt_params['bufferSize']) {
-            this.bufferSize = opt_params['bufferSize'];
+                this.bufferSize = opt_params['bufferSize'];
             }
             if (opt_params['bufferType']) {
-            this.bufferType = opt_params['bufferType'];
+                this.bufferType = opt_params['bufferType'];
             }
             if (opt_params['resize']) {
-            this.resize = opt_params['resize'];
+                this.resize = opt_params['resize'];
             }
         }
     
@@ -147,46 +146,48 @@ export class RawInflate{
 
     public decompress() {
         while (!this.bfinal) {
-          this.parseBlock();
+            this.parseBlock();
         }
         switch (this.bufferType) {
-          case RawInflate.BufferType.BLOCK:
-            return this.concatBufferBlock();
-          case RawInflate.BufferType.ADAPTIVE:
-            return this.concatBufferDynamic();
-          default:
-            throw new Error('invalid inflate mode');
+            case RawInflate.BufferType.BLOCK:
+                return this.concatBufferBlock();
+            case RawInflate.BufferType.ADAPTIVE:
+                return this.concatBufferDynamic();
+            default:
+                throw new Error('invalid inflate mode');
         }
     }
+    
     public parseBlock() {
         /** @type {number} header */
         let hdr = this.readBits(3);
       
         // BFINAL
         if (hdr & 0x1) {
-          this.bfinal = true;
+            this.bfinal = true;
         }
       
         // BTYPE
         hdr >>>= 1;
         switch (hdr) {
-          // uncompressed
-          case 0:
-            this.parseUncompressedBlock();
-            break;
-          // fixed huffman
-          case 1:
-            this.parseFixedHuffmanBlock();
-            break;
-          // dynamic huffman
-          case 2:
-            this.parseDynamicHuffmanBlock();
-            break;
-          // reserved or other
-          default:
-            throw new Error('unknown BTYPE: ' + hdr);
+            // uncompressed
+            case 0:
+                this.parseUncompressedBlock();
+                break;
+            // fixed huffman
+            case 1:
+                this.parseFixedHuffmanBlock();
+                break;
+            // dynamic huffman
+            case 2:
+                this.parseDynamicHuffmanBlock();
+                break;
+            // reserved or other
+            default:
+                throw new Error('unknown BTYPE: ' + hdr);
         }
     }
+
     public readBits(length: number) {
         let bitsbuf = this.bitsbuf;
         let bitsbuflen = this.bitsbuflen;
@@ -200,13 +201,13 @@ export class RawInflate{
       
         // input byte
         if (ip + ((length - bitsbuflen + 7) >> 3) >= inputLength) {
-          throw new Error('input buffer is broken');
+            throw new Error('input buffer is broken');
         }
       
         // not enough buffer
         while (bitsbuflen < length) {
-          bitsbuf |= input[ip++] << bitsbuflen;
-          bitsbuflen += 8;
+            bitsbuf |= input[ip++] << bitsbuflen;
+            bitsbuflen += 8;
         }
       
         // output byte
@@ -240,11 +241,11 @@ export class RawInflate{
       
         // not enough buffer
         while (bitsbuflen < maxCodeLength) {
-          if (ip >= inputLength) {
-            break;
-          }
-          bitsbuf |= input[ip++] << bitsbuflen;
-          bitsbuflen += 8;
+            if (ip >= inputLength) {
+                break;
+            }
+            bitsbuf |= input[ip++] << bitsbuflen;
+            bitsbuflen += 8;
         }
       
         // read max length
@@ -252,7 +253,7 @@ export class RawInflate{
         codeLength = codeWithLength >>> 16;
       
         if (codeLength > bitsbuflen) {
-          throw new Error('invalid code length: ' + codeLength);
+            throw new Error('invalid code length: ' + codeLength);
         }
       
         this.bitsbuf = bitsbuf >> codeLength;
@@ -285,19 +286,19 @@ export class RawInflate{
       
         // len
         if (ip + 1 >= inputLength) {
-          throw new Error('invalid uncompressed block header: LEN');
+            throw new Error('invalid uncompressed block header: LEN');
         }
         len = input[ip++] | (input[ip++] << 8);
       
         // nlen
         if (ip + 1 >= inputLength) {
-          throw new Error('invalid uncompressed block header: NLEN');
+            throw new Error('invalid uncompressed block header: NLEN');
         }
         nlen = input[ip++] | (input[ip++] << 8);
       
         // check len & nlen
         if (len === ~nlen) {
-          throw new Error('invalid uncompressed block header: length verify');
+            throw new Error('invalid uncompressed block header: length verify');
         }
       
         // check size
@@ -305,43 +306,43 @@ export class RawInflate{
       
         // expand buffer
         switch (this.bufferType) {
-          case RawInflate.BufferType.BLOCK:
-            // pre copy
-            while (op + len > output.length) {
-              preCopy = olength - op;
-              len -= preCopy;
-              if (USE_TYPEDARRAY) {
-                (<Uint8Array>output).set((<Uint8Array>input).subarray(ip, ip + preCopy), op);
-                op += preCopy;
-                ip += preCopy;
-              } else {
-                while (preCopy--) {
-                  output[op++] = input[ip++];
+            case RawInflate.BufferType.BLOCK:
+                // pre copy
+                while (op + len > output.length) {
+                preCopy = olength - op;
+                len -= preCopy;
+                if (USE_TYPEDARRAY) {
+                    (<Uint8Array>output).set((<Uint8Array>input).subarray(ip, ip + preCopy), op);
+                    op += preCopy;
+                    ip += preCopy;
+                } else {
+                    while (preCopy--) {
+                    output[op++] = input[ip++];
+                    }
                 }
-              }
-              this.op = op;
-              output = this.expandBufferBlock();
-              op = this.op;
-            }
-            break;
-          case RawInflate.BufferType.ADAPTIVE:
-            while (op + len > output.length) {
-              output = this.expandBufferAdaptive({fixRatio: 2});
-            }
-            break;
-          default:
-            throw new Error('invalid inflate mode');
+                this.op = op;
+                output = this.expandBufferBlock();
+                op = this.op;
+                }
+                break;
+            case RawInflate.BufferType.ADAPTIVE:
+                while (op + len > output.length) {
+                output = this.expandBufferAdaptive({fixRatio: 2});
+                }
+                break;
+            default:
+                throw new Error('invalid inflate mode');
         }
       
         // copy
         if (USE_TYPEDARRAY) {
             (<Uint8Array>output).set((<Uint8Array>input).subarray(ip, ip + len), op);
-          op += len;
-          ip += len;
+            op += len;
+            ip += len;
         } else {
-          while (len--) {
-            output[op++] = input[ip++];
-          }
+            while (len--) {
+                output[op++] = input[ip++];
+            }
         }
       
         this.ip = ip;
@@ -351,20 +352,20 @@ export class RawInflate{
 
     public parseFixedHuffmanBlock() {
         switch (this.bufferType) {
-          case RawInflate.BufferType.ADAPTIVE:
-            this.decodeHuffmanAdaptive(
-              RawInflate.FixedLiteralLengthTable,
-              RawInflate.FixedDistanceTable
-            );
-            break;
-          case RawInflate.BufferType.BLOCK:
-            this.decodeHuffmanBlock(
-              RawInflate.FixedLiteralLengthTable,
-              RawInflate.FixedDistanceTable
-            );
-            break;
-          default:
-            throw new Error('invalid inflate mode');
+            case RawInflate.BufferType.ADAPTIVE:
+                this.decodeHuffmanAdaptive(
+                RawInflate.FixedLiteralLengthTable,
+                RawInflate.FixedDistanceTable
+                );
+                break;
+            case RawInflate.BufferType.BLOCK:
+                this.decodeHuffmanBlock(
+                RawInflate.FixedLiteralLengthTable,
+                RawInflate.FixedDistanceTable
+                );
+                break;
+            default:
+                throw new Error('invalid inflate mode');
         }
     }
 
@@ -399,39 +400,39 @@ export class RawInflate{
       
         // decode code lengths
         for (i = 0; i < hclen; ++i) {
-          codeLengths[RawInflate.Order[i]] = this.readBits(3);
+            codeLengths[RawInflate.Order[i]] = this.readBits(3);
         }
         if (!USE_TYPEDARRAY) {
-          for (i = hclen, hclen = codeLengths.length; i < hclen; ++i) {
-            codeLengths[RawInflate.Order[i]] = 0;
-          }
+            for (i = hclen, hclen = codeLengths.length; i < hclen; ++i) {
+                codeLengths[RawInflate.Order[i]] = 0;
+            }
         }
       
         // decode length table
         codeLengthsTable = RawInflate.buildHuffmanTable(codeLengths);
         lengthTable = new (USE_TYPEDARRAY ? Uint8Array : Array)(hlit + hdist);
         for (i = 0, il = hlit + hdist; i < il;) {
-          code = this.readCodeByTable(codeLengthsTable);
-          switch (code) {
-            case 16:
-              repeat = 3 + this.readBits(2);
-              while (repeat--) { lengthTable[i++] = prev; }
-              break;
-            case 17:
-              repeat = 3 + this.readBits(3);
-              while (repeat--) { lengthTable[i++] = 0; }
-              prev = 0;
-              break;
-            case 18:
-              repeat = 11 + this.readBits(7);
-              while (repeat--) { lengthTable[i++] = 0; }
-              prev = 0;
-              break;
-            default:
-              lengthTable[i++] = code;
-              prev = code;
-              break;
-          }
+            code = this.readCodeByTable(codeLengthsTable);
+            switch (code) {
+                case 16:
+                    repeat = 3 + this.readBits(2);
+                    while (repeat--) { lengthTable[i++] = prev; }
+                break;
+                case 17:
+                    repeat = 3 + this.readBits(3);
+                    while (repeat--) { lengthTable[i++] = 0; }
+                    prev = 0;
+                break;
+                case 18:
+                    repeat = 11 + this.readBits(7);
+                    while (repeat--) { lengthTable[i++] = 0; }
+                    prev = 0;
+                break;
+                default:
+                    lengthTable[i++] = code;
+                    prev = code;
+                break;
+            }
         }
       
         litlenTable = USE_TYPEDARRAY
@@ -442,14 +443,14 @@ export class RawInflate{
           : RawInflate.buildHuffmanTable(lengthTable.slice(hlit));
       
         switch (this.bufferType) {
-          case RawInflate.BufferType.ADAPTIVE:
-            this.decodeHuffmanAdaptive(litlenTable, distTable);
-            break;
-          case RawInflate.BufferType.BLOCK:
-            this.decodeHuffmanBlock(litlenTable, distTable);
-            break;
-          default:
-            throw new Error('invalid inflate mode');
+            case RawInflate.BufferType.ADAPTIVE:
+                this.decodeHuffmanAdaptive(litlenTable, distTable);
+                break;
+            case RawInflate.BufferType.BLOCK:
+                this.decodeHuffmanBlock(litlenTable, distTable);
+                break;
+            default:
+                throw new Error('invalid inflate mode');
         }
     }
 
@@ -484,33 +485,32 @@ export class RawInflate{
                 output = this.expandBufferBlock();
                 op = this.op;
             }
-            output[op++] = code;
-        
-            continue;
+                output[op++] = code;
+                continue;
             }
         
             // length code
             ti = code - 257;
             codeLength = lengthCodeTable[ti];
             if (lengthExtraTable[ti] > 0) {
-            codeLength += this.readBits(lengthExtraTable[ti]);
+                codeLength += this.readBits(lengthExtraTable[ti]);
             }
         
             // dist code
             code = this.readCodeByTable(dist);
             codeDist = distCodeTable[code];
             if (distExtraTable[code] > 0) {
-            codeDist += this.readBits(distExtraTable[code]);
+                codeDist += this.readBits(distExtraTable[code]);
             }
         
             // lz77 decode
             if (op >= olength) {
-            this.op = op;
-            output = this.expandBufferBlock();
-            op = this.op;
+                this.op = op;
+                output = this.expandBufferBlock();
+                op = this.op;
             }
             while (codeLength--) {
-            output[op] = output[(op++) - codeDist];
+                output[op] = output[(op++) - codeDist];
             }
             code = this.readCodeByTable(litlen);
         }
@@ -521,6 +521,7 @@ export class RawInflate{
         }
         this.op = op;
     }
+
     public decodeHuffmanAdaptive(litlen: Array<number>|Uint16Array, dist: Array<number>|Uint8Array) {
         let output = this.output;
         let op = this.op;
@@ -546,53 +547,54 @@ export class RawInflate{
         code = this.readCodeByTable(litlen);
         while (code !== 256) {
           // literal
-          if (code < 256) {
-            if (op >= olength) {
-              output = this.expandBufferAdaptive();
-              olength = output.length;
+            if (code < 256) {
+                if (op >= olength) {
+                output = this.expandBufferAdaptive();
+                olength = output.length;
+                }
+                output[op++] = code;
+        
+                continue;
             }
-            output[op++] = code;
-      
-            continue;
-          }
       
           // length code
-          ti = code - 257;
-          codeLength = lengthCodeTable[ti];
-          if (lengthExtraTable[ti] > 0) {
-            codeLength += this.readBits(lengthExtraTable[ti]);
-          }
+            ti = code - 257;
+            codeLength = lengthCodeTable[ti];
+            if (lengthExtraTable[ti] > 0) {
+                codeLength += this.readBits(lengthExtraTable[ti]);
+            }
       
           // dist code
-          code = this.readCodeByTable(dist);
-          codeDist = distCodeTable[code];
-          if (distExtraTable[code] > 0) {
-            codeDist += this.readBits(distExtraTable[code]);
-          }
+            code = this.readCodeByTable(dist);
+            codeDist = distCodeTable[code];
+            if (distExtraTable[code] > 0) {
+                codeDist += this.readBits(distExtraTable[code]);
+            }
       
           // lz77 decode
-          if (op + codeLength > olength) {
-            output = this.expandBufferAdaptive();
-            olength = output.length;
-          }
-          while (codeLength--) {
-            output[op] = output[(op++) - codeDist];
-          }
-          code = this.readCodeByTable(litlen);
+            if (op + codeLength > olength) {
+                output = this.expandBufferAdaptive();
+                olength = output.length;
+            }
+            while (codeLength--) {
+                output[op] = output[(op++) - codeDist];
+            }
+            code = this.readCodeByTable(litlen);
         }
       
         while (this.bitsbuflen >= 8) {
-          this.bitsbuflen -= 8;
-          this.ip--;
+            this.bitsbuflen -= 8;
+            this.ip--;
         }
         this.op = op;
     }
+
     public expandBufferBlock() {
         /** @type {!(Array.<number>|Uint8Array)} store buffer. */
         let buffer =
-          new (USE_TYPEDARRAY ? Uint8Array : Array)(
+            new (USE_TYPEDARRAY ? Uint8Array : Array)(
               this.op - RawInflate.MaxBackwardLength
-          );
+            );
         /** @type {number} backward base point */
         let backward = this.op - RawInflate.MaxBackwardLength;
         /** @type {number} copy index. */
@@ -616,19 +618,20 @@ export class RawInflate{
       
         // copy to backward buffer
         if (USE_TYPEDARRAY) {
-          (<Uint8Array>output).set(
-            (<Uint8Array>output).subarray(backward, backward + RawInflate.MaxBackwardLength)
-          );
+            (<Uint8Array>output).set(
+                (<Uint8Array>output).subarray(backward, backward + RawInflate.MaxBackwardLength)
+            );
         } else {
-          for (i = 0; i < RawInflate.MaxBackwardLength; ++i) {
-            output[i] = output[backward + i];
-          }
+            for (i = 0; i < RawInflate.MaxBackwardLength; ++i) {
+                output[i] = output[backward + i];
+            }
         }
       
         this.op = RawInflate.MaxBackwardLength;
       
         return output;
     }
+
     public expandBufferAdaptive(opt_param?: any) {
         /** @type {!(Array.<number>|Uint8Array)} store buffer. */
         let buffer;
@@ -645,32 +648,32 @@ export class RawInflate{
         let output = this.output;
       
         if (opt_param) {
-          if (typeof opt_param.fixRatio === 'number') {
-            ratio = opt_param.fixRatio;
-          }
-          if (typeof opt_param.addRatio === 'number') {
-            ratio += opt_param.addRatio;
-          }
+            if (typeof opt_param.fixRatio === 'number') {
+                ratio = opt_param.fixRatio;
+            }
+            if (typeof opt_param.addRatio === 'number') {
+                ratio += opt_param.addRatio;
+            }
         }
       
         // calculate new buffer size
         if (ratio < 2) {
-          maxHuffCode =
-            (input.length - this.ip) / this.currentLitlenTable[2];
-          maxInflateSize = (maxHuffCode / 2 * 258) | 0;
-          newSize = maxInflateSize < output.length ?
-            output.length + maxInflateSize :
-            output.length << 1;
+            maxHuffCode =
+                (input.length - this.ip) / this.currentLitlenTable[2];
+            maxInflateSize = (maxHuffCode / 2 * 258) | 0;
+            newSize = maxInflateSize < output.length ?
+                output.length + maxInflateSize :
+                output.length << 1;
         } else {
-          newSize = output.length * ratio;
+            newSize = output.length * ratio;
         }
       
         // buffer expantion
         if (USE_TYPEDARRAY) {
-          buffer = new Uint8Array(newSize);
-          buffer.set(output);
+            buffer = new Uint8Array(newSize);
+            buffer.set(output);
         } else {
-          buffer = output;
+            buffer = output;
         }
       
         this.output = buffer;
@@ -702,22 +705,22 @@ export class RawInflate{
       
         // single buffer
         if (blocks.length === 0) {
-          return USE_TYPEDARRAY ?
-            (<Uint8Array>this.output).subarray(RawInflate.MaxBackwardLength, this.op) :
-            this.output.slice(RawInflate.MaxBackwardLength, this.op);
+            return USE_TYPEDARRAY ?
+                (<Uint8Array>this.output).subarray(RawInflate.MaxBackwardLength, this.op) :
+                this.output.slice(RawInflate.MaxBackwardLength, this.op);
         }
       
         // copy to buffer
         for (i = 0, il = blocks.length; i < il; ++i) {
-          block = blocks[i];
-          for (j = 0, jl = block.length; j < jl; ++j) {
-            buffer[pos++] = block[j];
-          }
+            block = blocks[i];
+            for (j = 0, jl = block.length; j < jl; ++j) {
+                buffer[pos++] = block[j];
+            }
         }
       
         // current buffer
         for (i = RawInflate.MaxBackwardLength, il = this.op; i < il; ++i) {
-          buffer[pos++] = output[i];
+            buffer[pos++] = output[i];
         }
       
         this.blocks = [];
@@ -725,27 +728,28 @@ export class RawInflate{
       
         return this.buffer;
     }
+
     public concatBufferDynamic() {
         /** @type {Array.<number>|Uint8Array} output buffer. */
         let buffer;
         let op = this.op;
       
         if (USE_TYPEDARRAY) {
-          if (this.resize) {
-            buffer = new Uint8Array(op);
-            buffer.set((<Uint8Array>this.output).subarray(0, op));
-          } else {
-            buffer = (<Uint8Array>this.output).subarray(0, op);
-          }
+            if (this.resize) {
+                buffer = new Uint8Array(op);
+                buffer.set((<Uint8Array>this.output).subarray(0, op));
+            } else {
+                buffer = (<Uint8Array>this.output).subarray(0, op);
+            }
         } else {
-          if (this.output.length > op) {
-            this.output = this.output.slice(0,op-1);
-          }
-          buffer = this.output;
+            if (this.output.length > op) {
+                this.output = this.output.slice(0,op-1);
+            }
+            buffer = this.output;
         }
       
         this.buffer = buffer;
       
         return this.buffer;
-      };
+    }
 }
