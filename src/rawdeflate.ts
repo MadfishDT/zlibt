@@ -208,7 +208,6 @@ export class RawDeflate {
         let length;
         let input = this.input;
       
-        // compression
         switch (this.compressionType) {
           case CompressionType.NONE:
             // each 65535-Byte (length header: 16-bit)
@@ -526,12 +525,8 @@ export class RawDeflate {
         freqsLitLen[256] = 1;
         const writeMatch = (match: Lz77Match, offset: number) => {
             let lz77Array = match.toLz77Array();
-            /** @type {number} */
-            let iw = 0;
-            /** @type {number} */
-            let ilw = 0;
-        
-            for (iw = 0, ilw = lz77Array.length; iw < ilw; ++i) {
+           
+            for (i = 0, il = lz77Array.length; i < il; ++i) {
                 lz77buf[pos++] = lz77Array[i];
             }
             freqsLitLen[lz77Array[0]]++;
@@ -548,8 +543,10 @@ export class RawDeflate {
                 matchKey = (matchKey << 8) | dataArray[position + i];
             }
 
-            if (table[matchKey]) { 
-                table[matchKey] = []; 
+            if (!table[matchKey]) { 
+                table[matchKey] = [];
+                matchsList = table[matchKey];
+            } else {
                 matchsList = table[matchKey];
             }
 

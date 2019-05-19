@@ -544,8 +544,7 @@ export class RawInflate {
         let distCodeTable = RawInflate.DistCodeTable;
         let distExtraTable = RawInflate.DistExtraTable;
     
-        code = this.readCodeByTable(litlen);
-        while (code !== 256) {
+        while ((code = this.readCodeByTable(litlen)) !== 256) {
           // literal
             if (code < 256) {
                 if (op >= olength) {
@@ -553,7 +552,6 @@ export class RawInflate {
                 olength = output.length;
                 }
                 output[op++] = code;
-        
                 continue;
             }
       

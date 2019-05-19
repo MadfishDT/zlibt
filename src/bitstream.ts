@@ -48,7 +48,7 @@ export class BitStream {
         let current = buffer[index];
         let i;
 
-        const rev32_ = ( num: number) => {
+        const rev32_ = (num: number) => {
             return (BitStream.ReverseTable[num & 0xFF] << 24) |
             (BitStream.ReverseTable[num >>> 8 & 0xFF] << 16) |
             (BitStream.ReverseTable[num >>> 16 & 0xFF] << 8) |

@@ -8,8 +8,8 @@ export class Inflate {
     public rawinflate: RawInflate;
     public verify: boolean | undefined;
     public method: CompressionMethod;
-    constructor(input: Array<number> | Uint8Array, opt_params: any) {
 
+    constructor(input: Array<number> | Uint8Array, opt_params: any) {
         let cmf: number;
         let flg: number;
         this.input = input;
@@ -17,12 +17,12 @@ export class Inflate {
 
         // option parameters
         if (opt_params) {
-        if (opt_params['index']) {
-            this.ip = opt_params['index'];
-        }
-        if (opt_params['verify']) {
-            this.verify = opt_params['verify'];
-        }
+            if (opt_params['index']) {
+                this.ip = opt_params['index'];
+            }
+            if (opt_params['verify']) {
+                this.verify = opt_params['verify'];
+            }
         }
     
         // Compression Method and Flags
@@ -48,15 +48,24 @@ export class Inflate {
         throw new Error('fdict flag is not supported');
         }
     
+        let bufferType: any = null;
+        let bufferSize: any = null;
+        let resize: any = false;
+        
         // RawInflate
+        if(opt_params) {
+            bufferType =  opt_params['bufferType'] ? opt_params['bufferType'] : null
+            bufferSize = opt_params['bufferSize'] ? opt_params['bufferSize'] : null
+            resize = opt_params['bufferSize'] ? opt_params['bufferSize'] : null
+        }
         this.rawinflate = new RawInflate(input, {
-        'index': this.ip,
-        'bufferType': opt_params['bufferType'],
-        'bufferSize': opt_params['bufferSize'],
-        'resize': opt_params['resize']
+            'index': this.ip,
+            'bufferType': bufferType,
+            'bufferSize': bufferSize,
+            'resize': resize
         });
     }
-    public decompress() {
+    public decompress() { 
         /** @type {!(Array|Uint8Array)} input buffer. */
         let input = this.input;
         /** @type {!(Uint8Array|Array)} inflated buffer. */
