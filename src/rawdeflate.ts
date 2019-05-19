@@ -507,7 +507,7 @@ export class RawDeflate {
         let matchKey = 0;
         let table = {};
         let windowSize = RawDeflate.WindowSize;
-        let matchList = [];
+        let matchsList= [];
         let longestMatch;
         let prevMatch;
         let lz77buf = USE_TYPEDARRAY ?
@@ -548,16 +548,17 @@ export class RawDeflate {
                 matchKey = (matchKey << 8) | dataArray[position + i];
             }
 
-            if (table[matchKey]) { table[matchKey] = []; }
-            matchList = table[matchKey];
+            if (table[matchKey]) { 
+                table[matchKey] = []; 
+                matchsList = table[matchKey];
+            }
 
             if (skipLength-- > 0) {
-                matchList.push(position);
+                matchsList.push(position);
                 continue;
             }
-        
-            while (matchList.length > 0 && position - matchList[0] > windowSize) {
-                matchList.shift();
+            while (matchsList.length > 0 && position - matchsList[0] > windowSize) {
+                matchsList.shift();
             }
       
             if (position + RawDeflate.Lz77MinLength >= length) {
@@ -573,8 +574,8 @@ export class RawDeflate {
                 break;
             }
       
-            if (matchList.length > 0) {
-                longestMatch = this.searchLongestMatch_(dataArray, position, matchList);
+            if (matchsList.length > 0) {
+                longestMatch = this.searchLongestMatch_(dataArray, position, matchsList);
                 if (prevMatch) {
                     if (prevMatch.length < longestMatch.length) {
                         // write previous literal
@@ -601,7 +602,7 @@ export class RawDeflate {
                 ++freqsLitLen[tmp];
             }
       
-            matchList.push(position);
+            matchsList.push(position);
         }
       
         lz77buf[pos++] = 256;

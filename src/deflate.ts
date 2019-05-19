@@ -16,6 +16,7 @@ import { CompressionMethod, RawDeflate, CompressionType } from './zlibt';
         private rawDeflateOption: any = {};
        
         constructor(input: Array<number> | Uint8Array, opt_params: any) {
+            console.log('this is make Deflate 1');
             this.input = input;
             this.output =
                         new (USE_TYPEDARRAY ? Uint8Array : Array)(Deflate.DefaultBufferSize);
@@ -29,16 +30,21 @@ import { CompressionMethod, RawDeflate, CompressionType } from './zlibt';
                 }
             }
           
-              // copy options
-            for (let prop of opt_params) {
-                this.rawDeflateOption[prop] = opt_params[prop];
+            // copy options
+            if(opt_params) {
+                const props = Object.keys(opt_params);
+                for (let prop of props) {
+                    this.rawDeflateOption[prop] = opt_params[prop];
+                }
             }
-          
             // set raw-deflate output buffer
             this.rawDeflateOption['outputBuffer'] = this.output;
             this.rawDeflate = new RawDeflate(this.input, this.rawDeflateOption);
+            console.log('this is make Deflate 2');
         }
+        
         public compress() {
+            console.log('this is make Deflate compress start');
             /** @type {Zlib.CompressionMethod} */
             let cm;
             /** @type {number} */
@@ -101,9 +107,7 @@ import { CompressionMethod, RawDeflate, CompressionType } from './zlibt';
             pos = output.length;
 
             if (USE_TYPEDARRAY) {
-                // subarray 分を元にもどす
                 output = new Uint8Array(output.buffer);
-                // expand buffer
                 if (output.length <= pos + 4) {
                 this.output = new Uint8Array(output.length + 4);
                 this.output.set(output);
@@ -119,5 +123,6 @@ import { CompressionMethod, RawDeflate, CompressionType } from './zlibt';
             output[pos++] = (adler      ) & 0xff;
 
             return output;
+            console.log('this is make Deflate compress end');
         }
     }

@@ -134,6 +134,7 @@ export class Unzip{
         /** @type {(Array.<number>|Uint8Array)} */
         this.password = opt_params['password'];
     }
+    
     public parse() {
         /** @type {!(Array.<number>|Uint8Array)} */
         let input = this.input;
@@ -229,6 +230,7 @@ export class Unzip{
       
         this.length = ip - this.offset;
     }
+
     public searchEndOfCentralDirectoryRecord() {
         /** @type {!(Array.<number>|Uint8Array)} */
         let input = this.input;
@@ -247,6 +249,7 @@ export class Unzip{
       
         throw new Error('End of Central Directory Record not found');
     }
+
     public parseEndOfCentralDirectoryRecord() {
         /** @type {!(Array.<number>|Uint8Array)} */
         let input = this.input;
@@ -366,7 +369,7 @@ export class Unzip{
         }
       
         if (fileHeaderList[index] === void 0) {
-          throw new Error('wrong index');
+            throw new Error('wrong index');
         }
       
         offset = fileHeaderList[index].relativeOffset;
@@ -377,48 +380,48 @@ export class Unzip{
       
         // decryption
         if ((localFileHeader.flags & LocalFileHeader.Flags.ENCRYPT) !== 0) {
-          if (!(opt_params['password'] || this.password)) {
-            throw new Error('please set password');
-          }
-          key =  this.createDecryptionKey(opt_params['password'] || this.password);
-      
-          // encryption header
-          for(i = offset, il = offset + 12; i < il; ++i) {
-            this.decode(key, input[i]);
-          }
-          offset += 12;
-          length -= 12;
-      
-          // decryption
-          for (i = offset, il = offset + length; i < il; ++i) {
-            input[i] = this.decode(key, input[i]);
-          }
+            if (!(opt_params['password'] || this.password)) {
+                throw new Error('please set password');
+            }
+            key =  this.createDecryptionKey(opt_params['password'] || this.password);
+        
+            // encryption header
+            for(i = offset, il = offset + 12; i < il; ++i) {
+                this.decode(key, input[i]);
+            }
+            offset += 12;
+            length -= 12;
+        
+            // decryption
+            for (i = offset, il = offset + length; i < il; ++i) {
+                input[i] = this.decode(key, input[i]);
+            }
         }
       
         switch (localFileHeader.compression) {
-          case Unzip.CompressionMethod.STORE:
-            buffer = USE_TYPEDARRAY ?
-              (<Uint8Array>this.input).subarray(offset, offset + length) :
-              this.input.slice(offset, offset + length);
-            break;
-          case Unzip.CompressionMethod.DEFLATE:
-            buffer = new RawInflate(this.input, {
-              'index': offset,
-              'bufferSize': localFileHeader.plainSize
-            }).decompress();
-            break;
-          default:
-            throw new Error('unknown compression type');
+            case Unzip.CompressionMethod.STORE:
+                buffer = USE_TYPEDARRAY ?
+                (<Uint8Array>this.input).subarray(offset, offset + length) :
+                this.input.slice(offset, offset + length);
+                break;
+            case Unzip.CompressionMethod.DEFLATE:
+                buffer = new RawInflate(this.input, {
+                'index': offset,
+                'bufferSize': localFileHeader.plainSize
+                }).decompress();
+                break;
+            default:
+                throw new Error('unknown compression type');
         }
       
         if (this.verify) {
-          crc32 = CRC32.calc(buffer);
-          if (localFileHeader.crc32 !== crc32) {
-            throw new Error(
-              'wrong crc: file=0x' + localFileHeader.crc32.toString(16) +
-              ', data=0x' + crc32.toString(16)
-            );
-          }
+            crc32 = CRC32.calc(buffer);
+            if (localFileHeader.crc32 !== crc32) {
+                throw new Error(
+                    'wrong crc: file=0x' + localFileHeader.crc32.toString(16) +
+                    ', data=0x' + crc32.toString(16)
+                );
+            }
         }
       
         return buffer;
@@ -435,28 +438,28 @@ export class Unzip{
         let fileHeaderList;
       
         if (!this.fileHeaderList) {
-          this.parseFileHeader();
+            this.parseFileHeader();
         }
         fileHeaderList = this.fileHeaderList;
       
         for (i = 0, il = fileHeaderList.length; i < il; ++i) {
-          filenameList[i] = fileHeaderList[i].filename;
+            filenameList[i] = fileHeaderList[i].filename;
         }
       
         return filenameList;
-      };
+    }
 
     public decompress(filename: string, opt_params: any) {
         /** @type {number} */
         let index;
       
         if (!this.filenameToIndex) {
-          this.parseFileHeader();
+            this.parseFileHeader();
         }
         index = this.filenameToIndex[filename];
       
         if (index === void 0) {
-          throw new Error(filename + ' not found');
+            throw new Error(filename + ' not found');
         }
       
         return this.getFileData(index, opt_params);
@@ -478,5 +481,4 @@ export class Unzip{
     public updateKeys = Zip.updateKeys;
     public createDecryptionKey = Zip.createEncryptionKey;
     public getByte = Zip.getByte;
-      
 }
