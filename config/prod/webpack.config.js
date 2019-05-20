@@ -19,6 +19,6 @@ module.exports = {
   output: {
     filename: 'zlibt.js',
     libraryTarget: 'commonjs',
-    path: path.resolve(__dirname, '../dist')
+    path: path.resolve(__dirname, '../dist/release')
   }
 };

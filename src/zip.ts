@@ -1,4 +1,5 @@
-import { CRC32, RawDeflate } from './zlibt';
+import { RawDeflate } from './rawdeflate';
+import { CRC32 } from './crc32';
 import { USE_TYPEDARRAY } from './define/typedarray/hybrid';
 
 export enum CompressionMethod {

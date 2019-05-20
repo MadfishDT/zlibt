@@ -1,5 +1,8 @@
 
-import { Zip, RawInflate, CRC32 } from './zlibt';
+import { Zip } from './zip';
+import { RawInflate } from './rawinflate';
+import { CRC32 } from './crc32';
+
 import { USE_TYPEDARRAY } from './define/typedarray/hybrid';
 
 export class FileHeader {

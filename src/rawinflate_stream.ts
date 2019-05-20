@@ -1,5 +1,5 @@
 import { USE_TYPEDARRAY } from './define/typedarray/hybrid';
-import { Huffman } from './zlibt';
+import { Huffman } from './huffman';
 
 const ZLIB_STREAM_RAW_INFLATE_BUFFER_SIZE = 0x8000;
 

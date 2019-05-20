@@ -1,5 +1,3 @@
-
-export enum CompressionMethod {
-    DEFLATE= 8,
-    RESERVED= 15
-};
+export { Deflate } from './deflate';
+export { InflateStream } from './inflate_stream';
+export { Inflate } from './inflate';

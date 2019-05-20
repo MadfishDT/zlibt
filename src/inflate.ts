@@ -1,5 +1,6 @@
-import { CompressionMethod } from './zlib';
-import { RawInflate, Adler32 } from './zlibt';
+import { CompressionMethod } from './define/compress';
+import { RawInflate } from './rawinflate';
+import { Adler32 } from './adler32'
 
 export class Inflate {
 

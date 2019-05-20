@@ -1,6 +1,6 @@
 
 import { USE_TYPEDARRAY } from './define/typedarray/hybrid';
-import { Huffman } from './zlibt';
+import { Huffman } from './huffman';
 
 enum rBufferType {
     BLOCK= 0,

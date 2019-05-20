@@ -8,9 +8,17 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon --watch src --delay 1 --exec ts-node src/zlibtest.ts",
-    "build": "webpack --config config/webpack.config.js",
+    "build:prod": "webpack --config config/prod/dev.config.js",
+    "build:gzip:prod": "webpack --config config/prod/config.gzip.js",
+    "build:zip:prod": "webpack --config config/prod/config.zip.js",
+    "build:zlib:prod": "webpack --config config/prod/config.zlib.js",
+    "build:raw:prod": "webpack --config config/prod/config.raw.js",
+    "build:dev": "webpack --config config/dev/dev.config.js --watch",
+    "build:gzip:dev": "webpack --config config/dev/dev.config.gzip.js --watch",
+    "build:zip:dev": "webpack --config config/dev/dev.config.zip.js --watch",
+    "build:zlib:dev": "webpack --config config/dev/dev.config.zlib.js --watch",
+    "build:raw:dev": "webpack --config config/dev/dev.config.raw.js --watch",
     "lint": "tslint --project tsconfig.json src/*",
-    "build:dev": "webpack --config config/webpack.dev.config.js --watch ",
     "lint:fix": "tslint --project tsconfig.json src/* --fix"
   },
   "repository": {
@@ -31,16 +39,17 @@
   },
   "homepage": "https://madfishdt.github.io",
   "devDependencies": {
+    "codelyzer": "~4.5.0",
+    "dts-bundle-webpack": "^1.0.2",
+    "eslint": "^5.15.0",
     "nodemon": "^1.18.11",
     "npm-run-all": "^4.1.5",
+    "source-map-support": "^0.5.12",
     "ts-loader": "^5.4.4",
     "ts-node": "^8.1.0",
-    "eslint": "^5.15.0",
     "typescript": "^3.4.5",
     "webpack": "^4.30.0",
-    "webpack-cli": "^3.3.1",
-    "source-map-support": "^0.5.12",
-    "codelyzer": "~4.5.0"
+    "webpack-cli": "^3.3.1"
   },
   "dependencies": {}
 }

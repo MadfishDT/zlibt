@@ -1,6 +1,7 @@
 import { USE_TYPEDARRAY } from './define/typedarray/hybrid';
 import { Adler32 } from './adler32';
-import { CompressionMethod, RawDeflate, CompressionType } from './zlibt';
+import { RawDeflate, CompressionType } from './rawdeflate';
+import { CompressionMethod } from './define/compress';
 
 export class Deflate {
     public static compress(input: Array<number> | Uint8Array, opt_params: any) {

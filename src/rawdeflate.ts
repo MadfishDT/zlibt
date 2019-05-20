@@ -1,13 +1,14 @@
 import { USE_TYPEDARRAY } from './define/typedarray/hybrid';
 import { BitStream } from './bitstream';
-import { Heap } from './zlibt';
+import { Heap } from './heap';
 
 export enum CompressionType {
     NONE= 0,
     FIXED= 1,
     DYNAMIC= 2,
     RESERVED= 3
-}; 
+};
+
 export class Lz77Match {
     public length: number;
     public backwardDistance: number;

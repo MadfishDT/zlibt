@@ -1,6 +1,6 @@
-import { CompressionMethod } from './zlib';
+import { CompressionMethod } from './define/compress';
 import { USE_TYPEDARRAY } from './define/typedarray/hybrid';
-import { RawInflateStream } from './zlibt';
+import { RawInflateStream } from './rawinflate_stream';
 export class InflateStream {
 
     public input: Array<number> | Uint8Array;

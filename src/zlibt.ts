@@ -5,14 +5,23 @@ export class ZlibT {
     }
 }
 export { Adler32 , Alder} from './adler32';
-export { RawDeflate, CompressionType } from './rawdeflate';
+
 export { CRC32 } from './crc32';
 export { Heap } from './heap';
 export { Huffman } from './huffman';
+
+// PKZIP
 export { Zip } from './zip';
+export { Unzip } from './unzip';
+
+// RAW
 export { RawInflate } from './rawinflate';
 export { RawInflateStream } from './rawinflate_stream';
-export { Deflate } from './deflate';
+export { RawDeflate, CompressionType } from './rawdeflate';
+
+// Zlib
 export { InflateStream } from './inflate_stream';
 export { Inflate } from './inflate';
-export { CompressionMethod } from './zlib';
+export { Deflate } from './deflate';
+
+export { CompressionMethod } from './define/compress';
