@@ -67,11 +67,8 @@ export class Inflate {
         });
     }
     public decompress() { 
-        /** @type {!(Array|Uint8Array)} input buffer. */
         let input = this.input;
-        /** @type {!(Uint8Array|Array)} inflated buffer. */
         let buffer;
-        /** @type {number} adler-32 checksum */
         let adler32;
       
         buffer = this.rawinflate.decompress();

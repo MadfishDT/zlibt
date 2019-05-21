@@ -125,23 +125,22 @@ export class Unzip{
 
     constructor(input: Array<number> | Uint8Array, opt_params: any) {
         opt_params = opt_params || {};
-        /** @type {!(Array.<number>|Uint8Array)} */
         this.input =
           (USE_TYPEDARRAY && (input instanceof Array)) ?
           new Uint8Array(input) : input;
-        /** @type {number} */
         this.ip = 0;
    
-        /** @type {boolean} */
         this.verify = opt_params['verify'] || false;
-        /** @type {(Array.<number>|Uint8Array)} */
         this.password = opt_params['password'];
     }
-    
+    public getFileHeaderAttribute(filename: string, attributeName: string) {
+        const fileHeaderIndex = this.filenameToIndex[filename];
+        if (fileHeaderIndex) {
+            return this.fileHeaderList[fileHeaderIndex][attributeName];
+        }
+    }
     public parse() {
-        /** @type {!(Array.<number>|Uint8Array)} */
         let input = this.input;
-        /** @type {number} */
         let ip = this.offset;
       
         // central file header signature
@@ -235,9 +234,7 @@ export class Unzip{
     }
 
     public searchEndOfCentralDirectoryRecord() {
-        /** @type {!(Array.<number>|Uint8Array)} */
         let input = this.input;
-        /** @type {number} */
         let ip;
       
         for (ip = input.length - 12; ip > 0; --ip) {
@@ -254,9 +251,7 @@ export class Unzip{
     }
 
     public parseEndOfCentralDirectoryRecord() {
-        /** @type {!(Array.<number>|Uint8Array)} */
         let input = this.input;
-        /** @type {number} */
         let ip;
       
         if (!this.eocdrOffset) {
@@ -346,25 +341,15 @@ export class Unzip{
 
     public getFileData(index: number, opt_params: any) {
         opt_params = opt_params || {};
-        /** @type {!(Array.<number>|Uint8Array)} */
         let input = this.input;
-        /** @type {Array.<Zlib.Unzip.FileHeader>} */
         let fileHeaderList = this.fileHeaderList;
-        /** @type {Zlib.Unzip.LocalFileHeader} */
         let localFileHeader;
-        /** @type {number} */
         let offset;
-        /** @type {number} */
         let length;
-        /** @type {!(Array.<number>|Uint8Array)} */
         let buffer;
-        /** @type {number} */
         let crc32;
-        /** @type {Array.<number>|Uint32Array|Object} */
         let key;
-        /** @type {number} */
         let i;
-        /** @type {number} */
         let il;
       
         if (!fileHeaderList) {
@@ -431,13 +416,9 @@ export class Unzip{
     }
 
     public getFilenames() {
-        /** @type {Array.<string>} */
         let filenameList = [];
-        /** @type {number} */
         let i;
-        /** @type {number} */
         let il;
-        /** @type {Array.<Zlib.Unzip.FileHeader>} */
         let fileHeaderList;
       
         if (!this.fileHeaderList) {

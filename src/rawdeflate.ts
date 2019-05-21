@@ -105,15 +105,11 @@ export class Lz77Match {
     }
 
     public toLz77Array() {
-        /** @type {number} */
+        
         let length = this.length;
-        /** @type {number} */
         let dist = this.backwardDistance;
-        /** @type {Array} */
         let codeArray = [];
-        /** @type {number} */
         let pos = 0;
-        /** @type {!Array.<number>} */
         let code;
       
         // length
@@ -201,11 +197,8 @@ export class RawDeflate {
     }
 
     public compress() {
-        /** @type {!(Array.<number>|Uint8Array)} */
         let blockArray;
-        /** @type {number} */
         let position;
-        /** @type {number} */
         let length;
         let input = this.input;
       
@@ -235,17 +228,11 @@ export class RawDeflate {
     }
 
     public makeNocompressBlock(blockArray: Array<number> | Uint8Array, isFinalBlock: boolean) {
-        /** @type {number} */
         let bfinal;
-        /** @type {Zlib.RawDeflate.CompressionType} */
         let btype;
-        /** @type {number} */
         let len;
-        /** @type {number} */
         let nlen;
-        /** @type {number} */
         let i;
-        /** @type {number} */
         let il;
 
         let output = this.output;
@@ -316,50 +303,27 @@ export class RawDeflate {
     }
 
     public makeDynamicHuffmanBlock(blockArray: Array<number> | Uint8Array, isFinalBlock: boolean) {
-        /** @type {Zlib.BitStream} */
         let stream = new BitStream(USE_TYPEDARRAY ?
             new Uint8Array((<Uint8Array>this.output).buffer) : this.output, this.op);
-        /** @type {number} */
         let bfinal;
-        /** @type {Zlib.RawDeflate.CompressionType} */
         let btype;
-        /** @type {!(Array.<number>|Uint16Array)} */
         let data;
-        /** @type {number} */
         let hlit;
-        /** @type {number} */
         let hdist;
-        /** @type {number} */
         let hclen;
-        /** @const @type {Array.<number>} */
         let hclenOrder =
                 [16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15];
-        /** @type {!(Array.<number>|Uint8Array)} */
         let litLenLengths;
-        /** @type {!(Array.<number>|Uint16Array)} */
         let litLenCodes;
-        /** @type {!(Array.<number>|Uint8Array)} */
         let distLengths;
-        /** @type {!(Array.<number>|Uint16Array)} */
         let distCodes;
-        /** @type {{
-         *   codes: !(Array.<number>|Uint32Array),
-         *   freqs: !(Array.<number>|Uint8Array)
-         * }} */
         let treeSymbols;
-        /** @type {!(Array.<number>|Uint8Array)} */
         let treeLengths;
-        /** @type {Array} */
         let transLengths = new Array(19);
-        /** @type {!(Array.<number>|Uint16Array)} */
         let treeCodes;
-        /** @type {number} */
         let code;
-        /** @type {number} */
         let bitlen;
-        /** @type {number} */
         let i;
-        /** @type {number} */
         let il;
 
         // header
@@ -428,21 +392,13 @@ export class RawDeflate {
     }
 
     public dynamicHuffman(dataArray: Array<number>|Uint16Array, litLen: any[], dist: any[], stream: any) {
-        /** @type {number} */
         let index;
-        /** @type {number} */
         let length;
-        /** @type {number} */
         let literal;
-        /** @type {number} */
         let code;
-        /** @type {number} */
         let litLenCodes;
-        /** @type {number} */
         let litLenLengths;
-        /** @type {number} */
         let distCodes;
-        /** @type {number} */
         let distLengths;
 
         litLenCodes = litLen[0];
@@ -476,11 +432,9 @@ export class RawDeflate {
     }
 
     public fixedHuffman(dataArray: Array<number> | Uint16Array, stream: BitStream) {
-        /** @type {number} */
+        
         let index;
-        /** @type {number} */
         let length;
-        /** @type {number} */
         let literal;
       
         for (index = 0, length = dataArray.length; index < length; index++) {
@@ -745,21 +699,15 @@ export class RawDeflate {
     }
 
     public getLengths_(freqs: Array<number>|Uint8Array|Uint32Array, limit: number) {
-        /** @type {number} */
+        
         let nSymbols = freqs.length;
-        /** @type {Zlib.Heap} */
         let heap = new Heap(2 * RawDeflate.HUFMAX);
-        /** @type {!(Array.<number>|Uint8Array)} */
         let length = new (USE_TYPEDARRAY ? Uint8Array : Array)(nSymbols);
-        /** @type {Array} */
         let nodes;
-        /** @type {!(Array.<number>|Uint32Array)} */
         let values;
-        /** @type {!(Array.<number>|Uint8Array)} */
         let codeLength;
-        /** @type {number} */
+        
         let i;
-        /** @type {number} */
         let il;
       
         if (!USE_TYPEDARRAY) {
@@ -795,38 +743,24 @@ export class RawDeflate {
     }
 
     public reversePackageMerge_(freqs: Array<number>|Uint32Array, symbols: number, limit: number) {
-        /** @type {!(Array.<number>|Uint16Array)} */
+        
         let minimumCost = new (USE_TYPEDARRAY ? Uint16Array : Array)(limit);
-        /** @type {!(Array.<number>|Uint8Array)} */
         let flag = new (USE_TYPEDARRAY ? Uint8Array : Array)(limit);
-        /** @type {!(Array.<number>|Uint8Array)} */
         let codeLength = new (USE_TYPEDARRAY ? Uint8Array : Array)(symbols);
-        /** @type {Array} */
         let value = new Array(limit);
-        /** @type {Array} */
         let type  = new Array(limit);
-        /** @type {Array.<number>} */
         let currentPosition = new Array(limit);
-        /** @type {number} */
+        
         let excess = (1 << limit) - symbols;
-        /** @type {number} */
         let half = (1 << (limit - 1));
-        /** @type {number} */
         let i;
-        /** @type {number} */
         let j;
-        /** @type {number} */
         let t;
-        /** @type {number} */
         let weight;
-        /** @type {number} */
         let next;
-      
-        /**
-         * @param {number} j
-         */
+    
         const takePackage = ( index: number) => {
-          /** @type {number} */
+          
             let x = type[index][currentPosition[index]];
       
             if (x === symbols) {

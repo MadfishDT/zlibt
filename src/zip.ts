@@ -43,23 +43,18 @@ export class Zip {
 
     public addFile(input: Array<number> | Uint8Array, opt_params: any) {
         opt_params = opt_params || {};
-        /** @type {boolean} */
         let compressed;
-        /** @type {number} */
         let size = input.length;
-        /** @type {number} */
         let crc32 = 0;
       
         if (USE_TYPEDARRAY && input instanceof Array) {
             input = new Uint8Array(input);
         }
       
-        // default
         if (typeof opt_params['compressionMethod'] !== 'number') {
             opt_params['compressionMethod'] = Zip.CompressionMethod.DEFLATE;
         }
       
-        // その場で圧縮する場合
         if (opt_params['compress']) {
             switch (opt_params['compressionMethod']) {
                 case Zip.CompressionMethod.STORE:
@@ -91,61 +86,33 @@ export class Zip {
     public compress() {
         let files = this.files;
         let file;
-        /** @type {!(Array.<number>|Uint8Array)} */
         let output;
-        /** @type {number} */
         let op1;
-        /** @type {number} */
         let op2;
-        /** @type {number} */
         let op3;
-        /** @type {number} */
         let localFileSize = 0;
-        /** @type {number} */
         let centralDirectorySize = 0;
-        /** @type {number} */
         let endOfCentralDirectorySize;
-        /** @type {number} */
         let offset;
-        /** @type {number} */
         let needVersion;
-        /** @type {number} */
         let flags;
-        /** @type {Zlib.Zip.CompressionMethod} */
         let compressionMethod;
-        /** @type {Date} */
         let date;
-        /** @type {number} */
         let crc32;
-        /** @type {number} */
         let size;
-        /** @type {number} */
         let plainSize;
-        /** @type {number} */
         let filenameLength;
-        /** @type {number} */
         let extraFieldLength;
-        /** @type {number} */
         let commentLength;
-        /** @type {(Array.<number>|Uint8Array)} */
         let filename;
-        /** @type {(Array.<number>|Uint8Array)} */
         let extraField;
-        /** @type {(Array.<number>|Uint8Array)} */
         let comment;
-        /** @type {(Array.<number>|Uint8Array)} */
         let buffer;
-        /** @type {*} */
         let tmp;
-        /** @type {Array.<number>|Uint32Array|Object} */
         let key;
-        /** @type {number} */
         let i;
-        /** @type {number} */
         let il;
-        /** @type {number} */
         let j;
-        /** @type {number} */
         let jl;
 
         for (i = 0, il = files.length; i < il; ++i) {

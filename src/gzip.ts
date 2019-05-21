@@ -1,6 +1,7 @@
 import { USE_TYPEDARRAY } from './define/typedarray/hybrid';
 import { CRC32 } from './crc32';
 import { RawDeflate } from './rawdeflate';
+
 enum gOperatingSystem  {
     FAT,
     AMIGA,
@@ -18,13 +19,15 @@ enum gOperatingSystem  {
     ACORN_RISCOS,
     UNKNOWN= 255
 };
+
 enum gFlagsMask {
     FTEXT= 0x01,
     FHCRC= 0x02,
     FEXTRA= 0x04,
     FNAME= 0x08,
     FCOMMENT= 0x10
-  };
+};
+
 export class Gzip {
 
     public input: Array<number> | Uint8Array;
@@ -39,8 +42,7 @@ export class Gzip {
     public static FlagsMask = gFlagsMask;
 
     public static DefaultBufferSize = 0x8000;
-      /** @enum {number} */
-      
+
     constructor(input: Array<number> | Uint8Array, opt_params: any) {
         this.input = input;
         this.ip = 0;
@@ -65,27 +67,18 @@ export class Gzip {
         this.deflateOptions = {};
         }
     }
+
     public compress() {
-        /** @type {number} flags. */
         let flg;
-        /** @type {number} modification time. */
         let mtime;
-        /** @type {number} CRC-16 value for FHCRC flag. */
         let crc16;
-        /** @type {number} CRC-32 value for verification. */
         let crc32;
-        /** @type {!Zlib.RawDeflate} raw deflate object. */
         let rawdeflate;
-        /** @type {number} character code */
         let c;
-        /** @type {number} loop counter. */
         let i;
-        /** @type {number} loop limiter. */
         let il;
-        /** @type {!(Array|Uint8Array)} output buffer. */
         let output =
           new (USE_TYPEDARRAY ? Uint8Array : Array)(Gzip.DefaultBufferSize);
-        /** @type {number} output buffer pointer. */
         let op = 0;
       
         let input = this.input;

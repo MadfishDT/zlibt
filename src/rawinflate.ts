@@ -460,15 +460,10 @@ export class RawInflate {
         
         this.currentLitlenTable = litlen;
         
-        /** @type {number} output position limit. */
         let olength = output.length - RawInflate.MaxCopyLength;
-        /** @type {number} huffman code. */
         let code;
-        /** @type {number} table index. */
         let ti;
-        /** @type {number} huffman code distination. */
         let codeDist;
-        /** @type {number} huffman code length. */
         let codeLength;
         
         let lengthCodeTable = RawInflate.LengthCodeTable;
@@ -528,15 +523,10 @@ export class RawInflate {
       
         this.currentLitlenTable = litlen;
       
-        /** @type {number} output position limit. */
         let olength = output.length;
-        /** @type {number} huffman code. */
         let code;
-        /** @type {number} table index. */
         let ti;
-        /** @type {number} huffman code distination. */
         let codeDist;
-        /** @type {number} huffman code length. */
         let codeLength;
       
         let lengthCodeTable = RawInflate.LengthCodeTable;
@@ -544,7 +534,7 @@ export class RawInflate {
         let distCodeTable = RawInflate.DistCodeTable;
         let distExtraTable = RawInflate.DistExtraTable;
     
-        while ((code = this.readCodeByTable(litlen)) !== 256) {
+        while ( (code = this.readCodeByTable(litlen)) !== 256 ) {
           // literal
             if (code < 256) {
                 if (op >= olength) {
@@ -588,16 +578,12 @@ export class RawInflate {
     }
 
     public expandBufferBlock() {
-        /** @type {!(Array.<number>|Uint8Array)} store buffer. */
         let buffer =
             new (USE_TYPEDARRAY ? Uint8Array : Array)(
               this.op - RawInflate.MaxBackwardLength
             );
-        /** @type {number} backward base point */
         let backward = this.op - RawInflate.MaxBackwardLength;
-        /** @type {number} copy index. */
         let i;
-        /** @type {number} copy limit */
         let il;
       
         let output = this.output;
@@ -631,15 +617,10 @@ export class RawInflate {
     }
 
     public expandBufferAdaptive(opt_param?: any) {
-        /** @type {!(Array.<number>|Uint8Array)} store buffer. */
         let buffer;
-        /** @type {number} expantion ratio. */
         let ratio = (this.input.length / this.ip + 1) | 0;
-        /** @type {number} maximum number of huffman code. */
         let maxHuffCode;
-        /** @type {number} new output buffer size. */
         let newSize;
-        /** @type {number} max inflate size. */
         let maxInflateSize;
       
         let input = this.input;
@@ -728,7 +709,6 @@ export class RawInflate {
     }
 
     public concatBufferDynamic() {
-        /** @type {Array.<number>|Uint8Array} output buffer. */
         let buffer;
         let op = this.op;
       

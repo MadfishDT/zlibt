@@ -14,6 +14,9 @@ export { Huffman } from './huffman';
 export { Zip } from './zip';
 export { Unzip } from './unzip';
 
+export { Gzip } from './gzip';
+export { Gunzip } from './gunzip';
+
 // RAW
 export { RawInflate } from './rawinflate';
 export { RawInflateStream } from './rawinflate_stream';
