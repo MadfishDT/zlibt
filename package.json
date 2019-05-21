@@ -8,7 +8,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon --watch src --delay 1 --exec ts-node src/zlibtest.ts",
-    "build:prod": "webpack --config config/prod/dev.config.js",
+    "build:prod": "webpack --config config/prod/config.js",
     "build:gzip:prod": "webpack --config config/prod/config.gzip.js",
     "build:zip:prod": "webpack --config config/prod/config.zip.js",
     "build:zlib:prod": "webpack --config config/prod/config.zlib.js",

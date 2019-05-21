@@ -1,5 +1,5 @@
-const Deflate = require('../dist/dev/zlibt.dev').Deflate;
-const Inflate = require('../dist/dev/zlibt.dev').Inflate;
+const Deflate = require('../dist/prod/zlibt').Deflate;
+const Inflate = require('../dist/prod/zlibt').Inflate;
 
 const datas = [1, 2, 3, 4, 5, 6];
 console.log(`input data: ${datas}`);

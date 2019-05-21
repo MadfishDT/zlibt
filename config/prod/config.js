@@ -1,5 +1,5 @@
 const path = require('path');
-const TypescriptDeclarationPlugin = require('typescript-declaration-webpack-plugin');
+const DtsBundleWebpack = require('dts-bundle-webpack')
 module.exports = {
     entry: './src/zlibt.ts',
     module: {
@@ -11,22 +11,23 @@ module.exports = {
         }
         ]
     },
-    devtool: 'source-map',
     target: 'node',
     optimization: {
-        minimize: false
+        minimize: true
     },
     resolve: {
         extensions: [ '.tsx', '.ts', '.js' ]
     },
     plugins: [
-        new TypescriptDeclarationPlugin({
-          out: 'zlibt.dev.d.ts'
+        new DtsBundleWebpack({
+            name: 'zlibt',
+            main: 'dist/debug/zlibt.d.ts',
+            out: '../../dist/prod/zlibt.d.ts'
         })
     ],
     output: {
-        filename: 'zlibt.dev.js',
+        filename: 'zlibt.js',
         libraryTarget: 'commonjs',
-        path: path.resolve(__dirname, '../../dist/dev')
+        path: path.resolve(__dirname, '../../dist/prod')
     }
 };
