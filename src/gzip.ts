@@ -2,7 +2,7 @@ import { USE_TYPEDARRAY } from './define/typedarray/hybrid';
 import { CRC32 } from './crc32';
 import { RawDeflate } from './rawdeflate';
 
-enum gOperatingSystem  {
+export enum gOperatingSystem  {
     FAT,
     AMIGA,
     VMS,
@@ -20,7 +20,7 @@ enum gOperatingSystem  {
     UNKNOWN= 255
 };
 
-enum gFlagsMask {
+export enum gFlagsMask {
     FTEXT= 0x01,
     FHCRC= 0x02,
     FEXTRA= 0x04,
@@ -30,14 +30,13 @@ enum gFlagsMask {
 
 export class Gzip {
 
-    public input: Array<number> | Uint8Array;
-    public ip: number;
-    public output: Array<number> | Uint8Array;
-    public op: number;
-    public flags: any;
-    public filename: string;
-    public comment: string;
-    public deflateOptions: any;
+    private input: Array<number> | Uint8Array;
+    private ip: number;
+    private output: Array<number> | Uint8Array;
+    private flags: any;
+    private filename: string;
+    private comment: string;
+    private deflateOptions: any;
     public static OperatingSystem = gOperatingSystem;
     public static FlagsMask = gFlagsMask;
 
@@ -46,7 +45,6 @@ export class Gzip {
     constructor(input: Array<number> | Uint8Array, opt_params: any) {
         this.input = input;
         this.ip = 0;
-        this.op = 0;
         this.flags = {};
     
         if (opt_params) {

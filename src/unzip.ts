@@ -2,8 +2,9 @@
 import { Zip } from './zip';
 import { RawInflate } from './rawinflate';
 import { CRC32 } from './crc32';
-
 import { USE_TYPEDARRAY } from './define/typedarray/hybrid';
+
+
 
 export class FileHeader {
 
@@ -36,46 +37,196 @@ export class FileHeader {
         this.offset = ip;
     }
     public static Flags = Zip.Flags;
+
+    public parse() {
+
+        let input = this.input;
+        let ip = this.offset;
+
+        if (input[ip++] !== Zip.FileHeaderSignature[0] ||
+            input[ip++] !== Zip.FileHeaderSignature[1] ||
+            input[ip++] !== Zip.FileHeaderSignature[2] ||
+            input[ip++] !== Zip.FileHeaderSignature[3]) {
+            throw new Error('invalid file header signature');
+        }
+
+        // version made by
+        this.version = input[ip++];
+        this.os = input[ip++];
+
+        // version needed to extract
+        this.needVersion = input[ip++] | (input[ip++] << 8);
+
+        // general purpose bit flag
+        this.flags = input[ip++] | (input[ip++] << 8);
+
+        // compression method
+        this.compression = input[ip++] | (input[ip++] << 8);
+
+        // last mod file time
+        this.time = input[ip++] | (input[ip++] << 8);
+
+        //last mod file date
+        this.date = input[ip++] | (input[ip++] << 8);
+
+        // crc-32
+        this.crc32 = (
+            (input[ip++]      ) | (input[ip++] <<  8) |
+            (input[ip++] << 16) | (input[ip++] << 24)
+        ) >>> 0;
+
+        // compressed size
+        this.compressedSize = (
+            (input[ip++]      ) | (input[ip++] <<  8) |
+            (input[ip++] << 16) | (input[ip++] << 24)
+        ) >>> 0;
+
+        // uncompressed size
+        this.plainSize = (
+            (input[ip++]      ) | (input[ip++] <<  8) |
+            (input[ip++] << 16) | (input[ip++] << 24)
+        ) >>> 0;
+
+        // file name length
+        this.fileNameLength = input[ip++] | (input[ip++] << 8);
+
+        // extra field length
+        this.extraFieldLength = input[ip++] | (input[ip++] << 8);
+
+        // file comment length
+        this.fileCommentLength = input[ip++] | (input[ip++] << 8);
+
+        // disk number start
+        this.diskNumberStart = input[ip++] | (input[ip++] << 8);
+
+        // internal file attributes
+        this.internalFileAttributes = input[ip++] | (input[ip++] << 8);
+
+        // external file attributes
+        this.externalFileAttributes =
+            (input[ip++]      ) | (input[ip++] <<  8) |
+            (input[ip++] << 16) | (input[ip++] << 24);
+
+        // relative offset of local header
+        this.relativeOffset = (
+            (input[ip++]      ) | (input[ip++] <<  8) |
+            (input[ip++] << 16) | (input[ip++] << 24)
+        ) >>> 0;
+
+        // file name
+        this.filename = String.fromCharCode.apply(null, USE_TYPEDARRAY ?
+            (<Uint8Array>input).subarray(ip, ip += this.fileNameLength) :
+            input.slice(ip, ip += this.fileNameLength)
+        );
+
+        // extra field
+        this.extraField = USE_TYPEDARRAY ?
+            (<Uint8Array>input).subarray(ip, ip += this.extraFieldLength) :
+            input.slice(ip, ip += this.extraFieldLength);
+
+        // file comment
+        this.comment = USE_TYPEDARRAY ?
+            (<Uint8Array>input).subarray(ip, ip + this.fileCommentLength) :
+            input.slice(ip, ip + this.fileCommentLength);
+
+        this.length = ip - this.offset;
+    }
 }
 
 export class LocalFileHeader{
 
-    /** @type {!(Array.<number>|Uint8Array)} */
     public input: Array<number> | Uint8Array;
-    /** @type {number} */
     public offset: number;
-    /** @type {number} */
     public length: number;
-    /** @type {number} */
+    public version: number;
+    public os: number;
     public needVersion: number;
-    /** @type {number} */
     public flags: number;
-    /** @type {number} */
     public compression: number;
-    /** @type {number} */
     public time: number;
-    /** @type {number} */
     public date: number;
-    /** @type {number} */
     public crc32: number;
-    /** @type {number} */
     public compressedSize: number;
-    /** @type {number} */
     public plainSize: number;
-    /** @type {number} */
     public fileNameLength: number;
-    /** @type {number} */
     public extraFieldLength: number;
-    /** @type {string} */
+    public fileCommentLength: number;
+    public diskNumberStart: number;
+    public internalFileAttributes: number;
+    public externalFileAttributes: number;
+    public relativeOffset: number;
     public filename: string;
-    /** @type {!(Array.<number>|Uint8Array)} */
-    public extraField: Array<number>|Uint8Array;
-
+    public extraField: Array<number> | Uint8Array;
+    public  comment: Array<number> | Uint8Array;
     public static Flags = Zip.Flags;
 
     constructor(input: Array<number> | Uint8Array, ip: number) {
         this.input = input;
         this.offset = ip;
+    }
+
+    public parse() {
+        let input = this.input;
+        let ip = this.offset;
+        // local file header signature
+        if (input[ip++] !== Zip.LocalFileHeaderSignature[0] ||
+            input[ip++] !== Zip.LocalFileHeaderSignature[1] ||
+            input[ip++] !== Zip.LocalFileHeaderSignature[2] ||
+            input[ip++] !== Zip.LocalFileHeaderSignature[3]) {
+            throw new Error('invalid local file header signature');
+        }
+
+        // version needed to extract
+        this.needVersion = input[ip++] | (input[ip++] << 8);
+
+        // general purpose bit flag
+        this.flags = input[ip++] | (input[ip++] << 8);
+
+        // compression method
+        this.compression = input[ip++] | (input[ip++] << 8);
+
+        // last mod file time
+        this.time = input[ip++] | (input[ip++] << 8);
+
+        //last mod file date
+        this.date = input[ip++] | (input[ip++] << 8);
+
+        // crc-32
+        this.crc32 = (
+            (input[ip++]      ) | (input[ip++] <<  8) |
+            (input[ip++] << 16) | (input[ip++] << 24)
+        ) >>> 0;
+
+        // compressed size
+        this.compressedSize = (
+            (input[ip++]      ) | (input[ip++] <<  8) |
+            (input[ip++] << 16) | (input[ip++] << 24)
+        ) >>> 0;
+
+        // uncompressed size
+        this.plainSize = (
+            (input[ip++]      ) | (input[ip++] <<  8) |
+            (input[ip++] << 16) | (input[ip++] << 24)
+        ) >>> 0;
+
+        // file name length
+        this.fileNameLength = input[ip++] | (input[ip++] << 8);
+
+        // extra field length
+        this.extraFieldLength = input[ip++] | (input[ip++] << 8);
+
+        // file name
+        this.filename = String.fromCharCode.apply(null, USE_TYPEDARRAY ?
+            (<Uint8Array>input).subarray(ip, ip += this.fileNameLength) :
+            input.slice(ip, ip += this.fileNameLength)
+        );
+
+        // extra field
+        this.extraField = USE_TYPEDARRAY ?
+        (<Uint8Array>input).subarray(ip, ip += this.extraFieldLength) :
+            input.slice(ip, ip += this.extraFieldLength);
+
+        this.length = ip - this.offset;
     }
 }
 
@@ -96,7 +247,7 @@ export class Unzip{
     public filenameToIndex: {};
     public verify: boolean;
     public password: Array<number> | Uint8Array;
-    public offset: number;
+    /*public offset: number;
     public version: number;
     public os: number;
     public needVersion: number;
@@ -116,7 +267,7 @@ export class Unzip{
     public relativeOffset: number;
     public filename: string;
     public extraField: Array<number> | Uint8Array;
-    public length: number;
+    public length: number;*/
 
     public static CompressionMethod = Zip.CompressionMethod;
     public static FileHeaderSignature = Zip.FileHeaderSignature;
@@ -133,104 +284,15 @@ export class Unzip{
         this.verify = opt_params['verify'] || false;
         this.password = opt_params['password'];
     }
+
     public getFileHeaderAttribute(filename: string, attributeName: string) {
+        if (!this.fileHeaderList) {
+            this.parseFileHeader();
+        }
         const fileHeaderIndex = this.filenameToIndex[filename];
         if (fileHeaderIndex) {
             return this.fileHeaderList[fileHeaderIndex][attributeName];
         }
-    }
-    public parse() {
-        let input = this.input;
-        let ip = this.offset;
-      
-        // central file header signature
-        if (input[ip++] !== Unzip.FileHeaderSignature[0] ||
-            input[ip++] !== Unzip.FileHeaderSignature[1] ||
-            input[ip++] !== Unzip.FileHeaderSignature[2] ||
-            input[ip++] !== Unzip.FileHeaderSignature[3]) {
-            throw new Error('invalid file header signature');
-        }
-      
-        // version made by
-        this.version = input[ip++];
-        this.os = input[ip++];
-      
-        // version needed to extract
-        this.needVersion = input[ip++] | (input[ip++] << 8);
-      
-        // general purpose bit flag
-        this.flags = input[ip++] | (input[ip++] << 8);
-      
-        // compression method
-        this.compression = input[ip++] | (input[ip++] << 8);
-      
-        // last mod file time
-        this.time = input[ip++] | (input[ip++] << 8);
-      
-        //last mod file date
-        this.date = input[ip++] | (input[ip++] << 8);
-      
-        // crc-32
-        this.crc32 = (
-            (input[ip++]      ) | (input[ip++] <<  8) |
-            (input[ip++] << 16) | (input[ip++] << 24)
-        ) >>> 0;
-      
-        // compressed size
-        this.compressedSize = (
-            (input[ip++]      ) | (input[ip++] <<  8) |
-            (input[ip++] << 16) | (input[ip++] << 24)
-        ) >>> 0;
-      
-        // uncompressed size
-        this.plainSize = (
-            (input[ip++]      ) | (input[ip++] <<  8) |
-            (input[ip++] << 16) | (input[ip++] << 24)
-        ) >>> 0;
-      
-        // file name length
-        this.fileNameLength = input[ip++] | (input[ip++] << 8);
-      
-        // extra field length
-        this.extraFieldLength = input[ip++] | (input[ip++] << 8);
-      
-        // file comment length
-        this.fileCommentLength = input[ip++] | (input[ip++] << 8);
-      
-        // disk number start
-        this.diskNumberStart = input[ip++] | (input[ip++] << 8);
-      
-        // internal file attributes
-        this.internalFileAttributes = input[ip++] | (input[ip++] << 8);
-      
-        // external file attributes
-        this.externalFileAttributes =
-            (input[ip++]      ) | (input[ip++] <<  8) |
-            (input[ip++] << 16) | (input[ip++] << 24);
-        
-        // relative offset of local header
-        this.relativeOffset = (
-            (input[ip++]      ) | (input[ip++] <<  8) |
-            (input[ip++] << 16) | (input[ip++] << 24)
-        ) >>> 0;
-      
-        // file name
-        this.filename = String.fromCharCode.apply(null, USE_TYPEDARRAY ?
-            (<Uint8Array>input).subarray(ip, ip += this.fileNameLength) :
-            input.slice(ip, ip += this.fileNameLength)
-        );
-      
-        // extra field
-        this.extraField = USE_TYPEDARRAY ?
-        (<Uint8Array>input).subarray(ip, ip += this.extraFieldLength) :
-          input.slice(ip, ip += this.extraFieldLength);
-      
-        // file comment
-        this.comment = USE_TYPEDARRAY ?
-        (<Uint8Array>input).subarray(ip, ip + this.fileCommentLength) :
-          input.slice(ip, ip + this.fileCommentLength);
-      
-        this.length = ip - this.offset;
     }
 
     public searchEndOfCentralDirectoryRecord() {

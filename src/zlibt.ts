@@ -1,9 +1,3 @@
-
-export class ZlibT {
-    public static LogTest(msg: string) {
-        console.log(msg);
-    }
-}
 export { Adler32 , Alder} from './adler32';
 
 export { CRC32 } from './crc32';

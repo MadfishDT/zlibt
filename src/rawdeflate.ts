@@ -150,7 +150,7 @@ export class RawDeflate {
 
     public static Lz77MinLength = 3;
 
-    constructor(input: Array<number> | Uint8Array, opt_params: any) {
+    constructor(input: Array<number> | Uint8Array, opt_params?: any) {
         this.compressionType = CompressionType.DYNAMIC;
         this.lazy = 0;
         this.length = 0;

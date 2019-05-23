@@ -3,7 +3,7 @@ import { Huffman } from './huffman';
 
 const ZLIB_STREAM_RAW_INFLATE_BUFFER_SIZE = 0x8000;
 
-enum rStatus {
+export enum rStatus {
     INITIALIZED= 0,
     BLOCK_HEADER_START= 1,
     BLOCK_HEADER_END= 2,
@@ -13,7 +13,7 @@ enum rStatus {
     DECODE_BLOCK_END= 6
 };
 
-enum rBlockType {
+export enum rBlockType {
     UNCOMPRESSED= 0,
     FIXED= 1,
     DYNAMIC= 2,
@@ -26,26 +26,24 @@ export class RawInflateStream {
     public static Status = rStatus;
     public static BlockType= rBlockType;
 
-    public blocks : Array<(Array<number> | Uint8Array)>;
-    public bufferSize: number;
-    public totalpos: number;
+    private bufferSize: number;
     public ip: number;
-    public bitsbuf: number;
-    public bitsbuflen: number;
-    public input: Array<number> | Uint8Array;
+    private bitsbuf: number;
+    private bitsbuflen: number;
+    private input: Array<number> | Uint8Array;
     public output: Array<number> | Uint8Array;
-    public op: number;
-    public bfinal: boolean;
-    public blockLength: number;
-    public resize: boolean;
-    public litlenTable: Array<number>;
-    public distTable: Array<number>;
-    public sp: number;
-    public status=0;
-    public ip_;
-    public bitsbuflen_;
-    public bitsbuf_;
-    public currentBlockType;
+    private op: number;
+    private bfinal: boolean;
+    private blockLength: number;
+    private resize: boolean;
+    private litlenTable: Array<number>;
+    private distTable: Array<number>;
+    private sp: number;
+    private status=0;
+    private ip_;
+    private bitsbuflen_;
+    private bitsbuf_;
+    private currentBlockType;
 
     public static MaxBackwardLength = 32768;
 
@@ -117,44 +115,23 @@ export class RawInflateStream {
     })();
 
     constructor (input: Uint8Array | Array<number>, ip?: number, opt_buffersize?: number) {
-         /** @type {!Array.<(Array|Uint8Array)>} */
-        this.blocks = [];
-        /** @type {number} block size. */
         this.bufferSize =
             opt_buffersize ? opt_buffersize : ZLIB_STREAM_RAW_INFLATE_BUFFER_SIZE;
-        /** @type {!number} total output buffer pointer. */
-        this.totalpos = 0;
-        /** @type {!number} input buffer pointer. */
         this.ip = ip === void 0 ? 0 : ip;
-        /** @type {!number} bit stream reader buffer. */
         this.bitsbuf = 0;
-        /** @type {!number} bit stream reader buffer size. */
         this.bitsbuflen = 0;
-        /** @type {!(Array|Uint8Array)} input buffer. */
         this.input = USE_TYPEDARRAY ? new Uint8Array(input) : input;
-        /** @type {!(Uint8Array|Array)} output buffer. */
         this.output = new (USE_TYPEDARRAY ? Uint8Array : Array)(this.bufferSize);
-        /** @type {!number} output buffer pointer. */
         this.op = 0;
-        /** @type {boolean} is final block flag. */
         this.bfinal = false;
-        /** @type {number} uncompressed block length. */
         this.blockLength =0;
-        /** @type {boolean} resize flag for memory size optimization. */
         this.resize = false;
-        /** @type {Array} */
         this.litlenTable = [];
-        /** @type {Array} */
         this.distTable = [];
-        /** @type {number} */
         this.sp = 0; // stream pointer
-        /** @type {RawInflateStream.Status} */
         this.status = RawInflateStream.Status.INITIALIZED;
-        /** @type {!number} */
         this.ip_ = 0;
-        /** @type {!number} */
         this.bitsbuflen_ = 0;
-        /** @type {!number} */
         this.bitsbuf_ = 0;
         this.currentBlockType = RawInflateStream.BlockType.FIXED;
     }

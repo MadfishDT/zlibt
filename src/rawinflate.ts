@@ -2,7 +2,7 @@
 import { USE_TYPEDARRAY } from './define/typedarray/hybrid';
 import { Huffman } from './huffman';
 
-enum rBufferType {
+export enum rBufferType {
     BLOCK= 0,
     ADAPTIVE= 1
 };

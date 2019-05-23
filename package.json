@@ -8,7 +8,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon --watch src --delay 1 --exec ts-node src/zlibtest.ts",
-    "build:prod": "webpack --config config/prod/config.js",
+    "build:prod": "webpack --config config/prod/config.js & webpack --config config/prod/config.umd.js",
+    "build:prod:umd": "webpack --config config/prod/config.umd.js",
     "build:gzip:prod": "webpack --config config/prod/config.gzip.js",
     "build:zip:prod": "webpack --config config/prod/config.zip.js",
     "build:zlib:prod": "webpack --config config/prod/config.zlib.js",
@@ -18,6 +19,7 @@
     "build:zip:dev": "webpack --config config/dev/dev.config.zip.js --watch",
     "build:zlib:dev": "webpack --config config/dev/dev.config.zlib.js --watch",
     "build:raw:dev": "webpack --config config/dev/dev.config.raw.js --watch",
+    "predeploy:prod": "node ./deploy/zlibt.js",
     "lint": "tslint --project tsconfig.json src/*",
     "lint:fix": "tslint --project tsconfig.json src/* --fix"
   },

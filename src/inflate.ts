@@ -4,11 +4,10 @@ import { Adler32 } from './adler32'
 
 export class Inflate {
 
-    public input: Uint8Array | Array<number>;
-    public ip: number;
-    public rawinflate: RawInflate;
-    public verify: boolean | undefined;
-    public method: CompressionMethod;
+    private input: Uint8Array | Array<number>;
+    private ip: number;
+    private rawinflate: RawInflate;
+    private verify: boolean | undefined;
 
     constructor(input: Array<number> | Uint8Array, opt_params: any) {
         let cmf: number;
@@ -33,7 +32,6 @@ export class Inflate {
         // compression method
         switch (cmf & 0x0f) {
         case CompressionMethod.DEFLATE:
-            this.method = CompressionMethod.DEFLATE;
             break;
         default:
             throw new Error('unsupported compression method');

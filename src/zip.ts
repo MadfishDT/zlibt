@@ -2,31 +2,31 @@ import { RawDeflate } from './rawdeflate';
 import { CRC32 } from './crc32';
 import { USE_TYPEDARRAY } from './define/typedarray/hybrid';
 
-export enum CompressionMethod {
-    STORE=   0,
-    DEFLATE= 8
-};
+
   
-export enum OperatingSystem {
-    MSDOS=  0,
-    UNIX=   3,
-    MACINTOSH= 7
-};
-  
-export enum Flags {
-    ENCRYPT=    0x0001,
-    DESCRIPTOR= 0x0008,
-    UTF8=       0x0800
-};
-  
+
 export class Zip {
 
-    public files = [];
-    public comment: Array<number>|Uint8Array;
-    public password: Array<number>|Uint8Array;
-    public static CompressionMethod = CompressionMethod;
-    public static OperatingSystem = OperatingSystem;
-    public static Flags = Flags;
+    public static Flags = {
+        ENCRYPT:    0x0001,
+        DESCRIPTOR: 0x0008,
+        UTF8:       0x0800
+    };
+
+    public static CompressionMethod = {
+        STORE: 0,
+        DEFLATE: 8
+    };
+
+    public static OperatingSystem ={
+        MSDOS: 0,
+        UNIX: 3,
+        MACINTOSH: 7
+    };
+      
+    private files = [];
+    private comment: Array<number>|Uint8Array;
+    private password: Array<number>|Uint8Array;
     constructor(opt_params: any) {
         opt_params = opt_params || {};
         this.files = [];

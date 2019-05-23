@@ -4,17 +4,15 @@ import { RawInflateStream } from './rawinflate_stream';
 
 export class InflateStream {
 
-    public input: Array<number> | Uint8Array;
-    public output: Array<number> | Uint8Array;
-    public ip: number;
-    public rawinflate: RawInflateStream;
-    public method: CompressionMethod;;
+    private input: Array<number> | Uint8Array;
+    private ip: number;
+    private rawinflate: RawInflateStream;
+    private method: CompressionMethod;;
 
     constructor(input: Array<number> | Uint8Array) {
         this.input = input === void 0 ? new (USE_TYPEDARRAY ? Uint8Array : Array)(null) : input;
         this.ip = 0;
         this.rawinflate = new RawInflateStream(this.input, this.ip);
-        this.output = this.rawinflate.output;
     }
 
     public decompress(input: Uint8Array | Array<number>) {

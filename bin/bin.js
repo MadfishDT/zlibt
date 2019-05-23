@@ -1,5 +1,5 @@
 #! /usr/bin/env node
-const Zlib = require('../zlib_and_gzip.min').Zlib;
+const ZlibT = require('../dist/prod/zlibt');
 const fs = require('fs');
 const path =require('path');
 

@@ -1,8 +1,6 @@
 const path = require('path');
-const DtsBundleWebpack = require('dts-bundle-webpack')
-
 module.exports = {
-    entry: './src/zip_unzip.ts',
+    entry: './src/zlibt.ts',
     module: {
         rules: [
         {
@@ -12,7 +10,6 @@ module.exports = {
         }
         ]
     },
-    devtool: 'source-map',
     target: 'node',
     optimization: {
         minimize: true
@@ -20,16 +17,9 @@ module.exports = {
     resolve: {
         extensions: [ '.tsx', '.ts', '.js' ]
     },
-    plugins: [
-        new DtsBundleWebpack({
-            name: 'zib',
-            main: 'dist/debug/zip_unzip.d.ts',
-            out: '../../dist/dev/zip.d.ts'
-        })
-    ],
     output: {
-        filename: 'zip.js',
-        libraryTarget: 'commonjs',
+        filename: 'zlibt.umd.js',
+        libraryTarget: 'umd',
         path: path.resolve(__dirname, '../../dist/prod')
     }
 };

@@ -22,7 +22,8 @@ module.exports = {
         new DtsBundleWebpack({
             name: 'zlibt',
             main: 'dist/debug/zlibt.d.ts',
-            out: '../../dist/prod/zlibt.d.ts'
+            out: '../../dist/prod/zlibt.d.ts',
+            outputAsModuleFolder: true
         })
     ],
     output: {
