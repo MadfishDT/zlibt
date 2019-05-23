@@ -27,7 +27,7 @@ export class Zip {
     private files = [];
     private comment: Array<number>|Uint8Array;
     private password: Array<number>|Uint8Array;
-    constructor(opt_params: any) {
+    constructor(opt_params?: any) {
         opt_params = opt_params || {};
         this.files = [];
         /** @type {(Array.<number>|Uint8Array)} */

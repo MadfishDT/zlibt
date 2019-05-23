@@ -56,7 +56,7 @@ export class Zip {
         UNIX: number;
         MACINTOSH: number;
     };
-    constructor(opt_params: any);
+    constructor(opt_params?: any);
     static FileHeaderSignature: number[];
     static LocalFileHeaderSignature: number[];
     static CentralDirectorySignature: number[];
@@ -157,7 +157,7 @@ export class Unzip {
     static FileHeaderSignature: number[];
     static LocalFileHeaderSignature: number[];
     static CentralDirectorySignature: number[];
-    constructor(input: Array<number> | Uint8Array, opt_params: any);
+    constructor(input: Array<number> | Uint8Array, opt_params?: any);
     getFileHeaderAttribute(filename: string, attributeName: string): any;
     searchEndOfCentralDirectoryRecord(): void;
     parseEndOfCentralDirectoryRecord(): void;
@@ -203,7 +203,7 @@ export class Gzip {
     static OperatingSystem: typeof gOperatingSystem;
     static FlagsMask: typeof gFlagsMask;
     static DefaultBufferSize: number;
-    constructor(input: Array<number> | Uint8Array, opt_params: any);
+    constructor(input: Array<number> | Uint8Array, opt_params?: any);
     compress(): any[] | Uint8Array;
 }
 
@@ -252,7 +252,7 @@ export class RawInflate {
     bufferType: rBufferType;
     /** @type {boolean} resize flag for memory size optimization. */
     resize: boolean;
-    constructor(input: Uint8Array | Array<number>, opt_params: any);
+    constructor(input: Uint8Array | Array<number>, opt_params?: any);
     decompress(): Uint8Array | number[];
     parseBlock(): void;
     readBits(length: number): any;
@@ -341,7 +341,7 @@ export class RawDeflate {
     static MaxCodeLength: number;
     static HUFMAX: number;
     static Lz77MinLength: number;
-    constructor(input: Array<number> | Uint8Array, opt_params: any);
+    constructor(input: Array<number> | Uint8Array, opt_params?: any);
     static readonly FixedHuffmanTable: any[];
     compress(): Uint8Array | number[];
     makeNocompressBlock(blockArray: Array<number> | Uint8Array, isFinalBlock: boolean): Uint8Array | number[];
@@ -367,14 +367,14 @@ export class InflateStream {
 }
 
 export class Inflate {
-    constructor(input: Array<number> | Uint8Array, opt_params: any);
+    constructor(input: Array<number> | Uint8Array, opt_params?: any);
     decompress(): any;
 }
 
 export class Deflate {
     static compress(input: Array<number> | Uint8Array, opt_params: any): any;
     static DefaultBufferSize: number;
-    constructor(input: Array<number> | Uint8Array, opt_params: any);
+    constructor(input: Array<number> | Uint8Array, opt_params?: any);
     compress(): any;
 }
 

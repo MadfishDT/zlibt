@@ -96,7 +96,7 @@ export class RawInflate {
     /** @type {boolean} resize flag for memory size optimization. */
     public resize = false;
 
-    constructor(input: Uint8Array | Array<number>, opt_params: any) {
+    constructor(input: Uint8Array | Array<number>, opt_params?: any) {
         this.blocks = [];
         this.bufferSize = RawInflate.ZLIB_RAW_INFLATE_BUFFER_SIZE;
         this.totalpos = 0;

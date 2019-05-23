@@ -16,7 +16,7 @@ export class Deflate {
     private rawDeflate: RawDeflate;
     private rawDeflateOption: any = {};
    
-    constructor(input: Array<number> | Uint8Array, opt_params: any) {
+    constructor(input: Array<number> | Uint8Array, opt_params?: any) {
         this.input = input;
         this.output =
                     new (USE_TYPEDARRAY ? Uint8Array : Array)(Deflate.DefaultBufferSize);

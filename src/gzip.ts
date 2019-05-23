@@ -42,7 +42,7 @@ export class Gzip {
 
     public static DefaultBufferSize = 0x8000;
 
-    constructor(input: Array<number> | Uint8Array, opt_params: any) {
+    constructor(input: Array<number> | Uint8Array, opt_params?: any) {
         this.input = input;
         this.ip = 0;
         this.flags = {};

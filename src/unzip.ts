@@ -274,7 +274,7 @@ export class Unzip{
     public static LocalFileHeaderSignature = Zip.LocalFileHeaderSignature;
     public static CentralDirectorySignature = Zip.CentralDirectorySignature;
 
-    constructor(input: Array<number> | Uint8Array, opt_params: any) {
+    constructor(input: Array<number> | Uint8Array, opt_params?: any) {
         opt_params = opt_params || {};
         this.input =
           (USE_TYPEDARRAY && (input instanceof Array)) ?

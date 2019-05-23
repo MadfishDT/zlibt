@@ -9,7 +9,7 @@ export class Inflate {
     private rawinflate: RawInflate;
     private verify: boolean | undefined;
 
-    constructor(input: Array<number> | Uint8Array, opt_params: any) {
+    constructor(input: Array<number> | Uint8Array, opt_params?: any) {
         let cmf: number;
         let flg: number;
         this.input = input;
