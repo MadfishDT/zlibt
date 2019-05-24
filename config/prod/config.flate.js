@@ -1,7 +1,8 @@
 const path = require('path');
 const DtsBundleWebpack = require('dts-bundle-webpack');
+
 module.exports = {
-    entry: './src/zlibt.ts',
+    entry: './src/flate.ts',
     module: {
         rules: [
         {
@@ -20,14 +21,14 @@ module.exports = {
     },
     plugins: [
         new DtsBundleWebpack({
-            name: 'zlibt',
-            main: 'dist/debug/zlibt.d.ts',
-            out: '../../dist/prod/zlibt.d.ts',
+            name: 'flate',
+            main: 'dist/debug/flate.d.ts',
+            out: '../../dist/prod/flate.d.ts',
             outputAsModuleFolder: true
         })
     ],
     output: {
-        filename: 'zlibt.js',
+        filename: 'flate.js',
         libraryTarget: 'commonjs',
         path: path.resolve(__dirname, '../../dist/prod')
     }

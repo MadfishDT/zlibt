@@ -1,5 +1,5 @@
 const path = require('path');
-const TypescriptDeclarationPlugin = require('typescript-declaration-webpack-plugin');
+const DtsBundleWebpack = require('dts-bundle-webpack');
 
 module.exports = {
     entry: './src/gzip_gunzip.ts',
@@ -12,22 +12,24 @@ module.exports = {
         }
         ]
     },
-    devtool: 'source-map',
     target: 'node',
     optimization: {
-        minimize: false
+        minimize: true
     },
     resolve: {
         extensions: [ '.tsx', '.ts', '.js' ]
     },
     plugins: [
-        new TypescriptDeclarationPlugin({
-          out: 'gzip_gunzip.dev.d.ts'
+        new DtsBundleWebpack({
+          name: 'gzip',
+          main: 'dist/debug/gzip_gunzip.d.ts',
+          out: '../../dist/prod/gzip.d.ts',
+          outputAsModuleFolder: true
         })
     ],
     output: {
-        filename: 'gzip_gunzip.dev.js',
+        filename: 'gzip.js',
         libraryTarget: 'commonjs',
-        path: path.resolve(__dirname, '../../dist/dev')
+        path: path.resolve(__dirname, '../../dist/prod')
     }
 };

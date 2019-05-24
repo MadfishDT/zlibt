@@ -2,7 +2,7 @@ const path = require('path');
 const DtsBundleWebpack = require('dts-bundle-webpack')
 
 module.exports = {
-    entry: './src/zlib.ts',
+    entry: './src/zip_unzip.ts',
     module: {
         rules: [
         {
@@ -12,23 +12,16 @@ module.exports = {
         }
         ]
     },
-    devtool: 'source-map',
-    target: 'node',
+    target: 'web',
     optimization: {
-        minimize: false
+        minimize: true
     },
     resolve: {
         extensions: [ '.tsx', '.ts', '.js' ]
     },
-    plugins: [
-        new DtsBundleWebpack({
-            name: 'zlib.dev',
-            main: '../../dist/debug/zlib.d.ts'
-        })
-    ],
     output: {
-        filename: 'zlib.dev.js',
-        libraryTarget: 'commonjs',
-        path: path.resolve(__dirname, '../../dist/dev')
+        filename: 'zip.umd.js',
+        libraryTarget: 'umd',
+        path: path.resolve(__dirname, '../../dist/prod')
     }
 };

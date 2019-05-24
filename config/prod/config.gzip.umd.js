@@ -1,6 +1,7 @@
 const path = require('path');
+
 module.exports = {
-    entry: './src/zlibt.ts',
+    entry: './src/gzip_gunzip.ts',
     module: {
         rules: [
         {
@@ -18,7 +19,7 @@ module.exports = {
         extensions: [ '.tsx', '.ts', '.js' ]
     },
     output: {
-        filename: 'zlibt.umd.js',
+        filename: 'gzip.umd.js',
         libraryTarget: 'umd',
         path: path.resolve(__dirname, '../../dist/prod')
     }

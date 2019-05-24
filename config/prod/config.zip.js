@@ -12,7 +12,6 @@ module.exports = {
         }
         ]
     },
-    devtool: 'source-map',
     target: 'node',
     optimization: {
         minimize: true
@@ -22,9 +21,10 @@ module.exports = {
     },
     plugins: [
         new DtsBundleWebpack({
-            name: 'zib',
+            name: 'zip',
             main: 'dist/debug/zip_unzip.d.ts',
-            out: '../../dist/dev/zip.d.ts'
+            out: '../../dist/prod/zip.d.ts',
+            outputAsModuleFolder: true
         })
     ],
     output: {
