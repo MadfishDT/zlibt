@@ -16,10 +16,6 @@
     "build:raw:prod": "webpack --config config/prod/config.raw.js & webpack --config config/prod/config.raw.umd.js",
     "build:flate:prod": "webpack --config config/prod/config.flate.js & webpack --config config/prod/config.flate.umd.js",
     "build:dev": "webpack --config config/dev/dev.config.js --watch",
-    "build:gzip:dev": "webpack --config config/dev/dev.config.gzip.js --watch",
-    "build:zip:dev": "webpack --config config/dev/dev.config.zip.js --watch",
-    "build:zlib:dev": "webpack --config config/dev/dev.config.zlib.js --watch",
-    "build:raw:dev": "webpack --config config/dev/dev.config.raw.js --watch",
     "predeploy:prod": "node ./deploy/zlibt.js",
     "lint": "tslint --project tsconfig.json src/*",
     "lint:fix": "tslint --project tsconfig.json src/* --fix"

@@ -228,10 +228,10 @@ export class RawInflate {
     static MaxBackwardLength: number;
     static MaxCopyLength: number;
     currentLitlenTable: Array<number> | Uint16Array;
-    static Order: number[] | Uint16Array;
-    static LengthCodeTable: number[] | Uint16Array;
+    static Order: Uint16Array | number[];
+    static LengthCodeTable: Uint16Array | number[];
     static LengthExtraTable: Uint8Array | number[];
-    static DistCodeTable: number[] | Uint16Array;
+    static DistCodeTable: Uint16Array | number[];
     static DistExtraTable: Uint8Array | number[];
     static FixedLiteralLengthTable: any[];
     static FixedDistanceTable: any[];
@@ -289,10 +289,10 @@ export class RawInflateStream {
     output: Array<number> | Uint8Array;
     static MaxBackwardLength: number;
     static MaxCopyLength: number;
-    static Order: number[] | Uint16Array;
-    static LengthCodeTable: number[] | Uint16Array;
+    static Order: Uint16Array | number[];
+    static LengthCodeTable: Uint16Array | number[];
     static LengthExtraTable: Uint8Array | number[];
-    static DistCodeTable: number[] | Uint16Array;
+    static DistCodeTable: Uint16Array | number[];
     static DistExtraTable: Uint8Array | number[];
     static FixedLiteralLengthTable: any[];
     static FixedDistanceTable: any[];
@@ -349,7 +349,7 @@ export class RawDeflate {
     makeDynamicHuffmanBlock(blockArray: Array<number> | Uint8Array, isFinalBlock: boolean): any;
     dynamicHuffman(dataArray: Array<number> | Uint16Array, litLen: any[], dist: any[], stream: any): any;
     fixedHuffman(dataArray: Array<number> | Uint16Array, stream: BitStream): BitStream;
-    lz77(dataArray: Array<number> | Uint8Array): number[] | Uint16Array;
+    lz77(dataArray: Array<number> | Uint8Array): Uint16Array | number[];
     searchLongestMatch_(data: any, position: number, matchList: Array<number>): Lz77Match;
     getTreeSymbols_(hlit: number, litlenLengths: Array<number> | Uint8Array, hdist: number, distLengths: Array<number> | Uint8Array): {
         codes: any[] | Uint32Array;
