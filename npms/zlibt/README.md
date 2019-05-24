@@ -1,5 +1,5 @@
 # zlibt2
-* **zlib js full convert to typescript code for typescript, javscript, nodejs**
+* **zlib js full convert to typescript code for typescript, javscript(pure website), nodejs**
 * **zlib.js is ZLIB(RFC1950), DEFLATE(RFC1951), GZIP(RFC1952) and PKZIP implementation in JavaScript.**
 
 **original zlibjs code**
@@ -12,6 +12,8 @@ npm inatall zlibt2
 ```
 
 **support features:**
+-
+
 - Raw Deflate
 - Raw Inflate
 - Deflate
@@ -26,7 +28,25 @@ npm inatall zlibt2
 - Node js support
 - Typescript support(tested on angular 4 and chrome)
 - No dependency(pure typescript)
+- partial module support
+    - zip/unzip(pkzip) only module provide(/zlibt2/zip)
+    - raw deflate/inflate only module provide(/zlibt2/raw)
+    - deflate/inflate only module provide(/zlibt2/flate)
+    - gzip/gunzip only module provide(/zlibt2/gzip)
+    - support umd files for website 
+        - zip.umd.js, raw.umd.js, flate.umd.js, gzip.umd.js
+- if you do not need full supporting zlib, you can choose only one module. it help you make more small code when you use bundling solution.
+    
+    **full zlib bundled**
+    - import zlibt2 module, webpack bundle full zlib2 module
+    ```ts
+    import { RawDeflate, RawInflate, Deflate, Inflate, Gzip, Gunzip, Zip, Unzip } from 'zlibt2';
+    ```
 
+    **only raw deflate/inflate bundled**
+    ```ts
+    import { RawDeflate, RawInflate } from 'zlibt2/raw';
+    ```
 **dependency:**
 -
 
@@ -217,18 +237,18 @@ npm inatall zlibt2
 
 * GZip Compress Options
 
-```js
-{
-    deflateOptions: Object, // see: deflate option (ZLIB Option)
-    flags: {
-        fname: boolean, // use filename?
-        comment: boolean, // use comment?
-        fhcrc: boolean // use file checksum?
-    },
-    filename: string, // filename
-    comment: string // comment
-}
-```
+    ```js
+    {
+        deflateOptions: Object, // see: deflate option (ZLIB Option)
+        flags: {
+            fname: boolean, // use filename?
+            comment: boolean, // use comment?
+            fhcrc: boolean // use file checksum?
+        },
+        filename: string, // filename
+        comment: string // comment
+    }
+    ```
 
 **unzip get file header attrubute function**
 -
