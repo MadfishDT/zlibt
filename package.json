@@ -1,6 +1,6 @@
 {
   "name": "zlibt",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "zlibjs customize for typescript",
   "main": "zlib_and_gzip.min.js",
   "bin": "nodebin/bin.js",

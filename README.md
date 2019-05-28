@@ -6,6 +6,11 @@
 * zlib min file: https://github.com/imaya/zlib.js.git
 * zlib typescript declaration: https://github.com/imaya/zlib.js/issues/47#issuecomment-351906524
 
+**zlibt is deprecated someday**
+-
+- use version2 https://www.npmjs.com/package/zlibt2
+- versino2 support full zlibjs features
+
 **install**
 -
 ```
