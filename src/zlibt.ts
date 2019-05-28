@@ -1,12 +1,30 @@
-import { Adler32 as rAdler32, Alder as rAdler} from './adler32';
-import { RawDeflate as rRawDeflate} from './rawdeflate';
-export namespace ZlibT {
-    export const Adler32 = rAdler32;
-    export class Alder extends rAdler {};
-    export class RawDeflate extends rRawDeflate {};
 
-    export const CompressionMethod = {
-        DEFLATE: 8,
-        RESERVED: 15
-    };
+export class ZlibT {
+    public static LogTest(msg: string) {
+        console.log(msg);
+    }
 }
+export { Adler32 , Alder} from './adler32';
+
+export { CRC32 } from './crc32';
+export { Heap } from './heap';
+export { Huffman } from './huffman';
+
+// PKZIP
+export { Zip } from './zip';
+export { Unzip } from './unzip';
+
+export { Gzip } from './gzip';
+export { Gunzip } from './gunzip';
+
+// RAW
+export { RawInflate } from './rawinflate';
+export { RawInflateStream } from './rawinflate_stream';
+export { RawDeflate, CompressionType } from './rawdeflate';
+
+// Zlib
+export { InflateStream } from './inflate_stream';
+export { Inflate } from './inflate';
+export { Deflate } from './deflate';
+
+export { CompressionMethod } from './define/compress';

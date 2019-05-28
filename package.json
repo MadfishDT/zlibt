@@ -1,12 +1,25 @@
 {
   "name": "zlibt",
-  "version": "0.0.5",
-  "description": "zlibjs customize for typescript",
-  "main": "zlib_and_gzip.min.js",
-  "bin": "nodebin/bin.js",
+  "version": "0.1.0",
+  "description": "typescript zlib",
+  "main": "dist/zlibt.js",
+  "bin": "bin/bin.js",
   "types": "zlib_and_gzip.min.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --watch src --delay 1 --exec ts-node src/zlibtest.ts",
+    "build:prod": "webpack --config config/prod/config.js",
+    "build:gzip:prod": "webpack --config config/prod/config.gzip.js",
+    "build:zip:prod": "webpack --config config/prod/config.zip.js",
+    "build:zlib:prod": "webpack --config config/prod/config.zlib.js",
+    "build:raw:prod": "webpack --config config/prod/config.raw.js",
+    "build:dev": "webpack --config config/dev/dev.config.js --watch",
+    "build:gzip:dev": "webpack --config config/dev/dev.config.gzip.js --watch",
+    "build:zip:dev": "webpack --config config/dev/dev.config.zip.js --watch",
+    "build:zlib:dev": "webpack --config config/dev/dev.config.zlib.js --watch",
+    "build:raw:dev": "webpack --config config/dev/dev.config.raw.js --watch",
+    "lint": "tslint --project tsconfig.json src/*",
+    "lint:fix": "tslint --project tsconfig.json src/* --fix"
   },
   "repository": {
     "type": "git",
@@ -26,7 +39,17 @@
   },
   "homepage": "https://madfishdt.github.io",
   "devDependencies": {
-    "tslint": "^5.15.0",
-    "typescript": "~3.1.6"
-  }
+    "codelyzer": "~4.5.0",
+    "dts-bundle-webpack": "^1.0.2",
+    "eslint": "^5.15.0",
+    "nodemon": "^1.18.11",
+    "npm-run-all": "^4.1.5",
+    "source-map-support": "^0.5.12",
+    "ts-loader": "^5.4.4",
+    "ts-node": "^8.1.0",
+    "typescript": "^3.4.5",
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.1"
+  },
+  "dependencies": {}
 }

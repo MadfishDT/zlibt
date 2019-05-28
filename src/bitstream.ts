@@ -2,9 +2,9 @@ import { USE_TYPEDARRAY } from './define/typedarray/hybrid';
 
 export class BitStream {
     public static DefaultBlockSize = 0x8000;
-    public index: number;
-    public bitindex: number;
-    public buffer: any;
+    private index: number;
+    private bitindex: number;
+    private buffer: any;
     public static ReverseTable: Uint8Array | any[];
 
     constructor(buffer: Uint8Array | Array<any>, bufferPosition: number) {
@@ -26,7 +26,6 @@ export class BitStream {
         let oldbuf = this.buffer;
         let i = 0;
         let il = oldbuf.length;
-        let buffer: Uint8Array | Array<any> = new (USE_TYPEDARRAY ? Uint8Array : Array)(il << 1);
         // copy buffer
         if(USE_TYPEDARRAY) {
             let uint8Buffer = new Uint8Array(il << 1);
@@ -41,7 +40,7 @@ export class BitStream {
         }
       }
 
-    public writeBits(number: number, n: number, reverse: number) {
+    public writeBits(number: number, n: number, reverse?: boolean) {
         let buffer = this.buffer;
         let index = this.index;
         let bitindex =this.bitindex;
@@ -49,11 +48,11 @@ export class BitStream {
         let current = buffer[index];
         let i;
 
-        const rev32_ = (n) => {
-            return (BitStream.ReverseTable[n & 0xFF] << 24) |
-            (BitStream.ReverseTable[n >>> 8 & 0xFF] << 16) |
-            (BitStream.ReverseTable[n >>> 16 & 0xFF] << 8) |
-            BitStream.ReverseTable[n >>> 24 & 0xFF];
+        const rev32_ = (num: number) => {
+            return (BitStream.ReverseTable[num & 0xFF] << 24) |
+            (BitStream.ReverseTable[num >>> 8 & 0xFF] << 16) |
+            (BitStream.ReverseTable[num >>> 16 & 0xFF] << 8) |
+            BitStream.ReverseTable[num >>> 24 & 0xFF];
         }
 
         if (reverse && n > 1) {
@@ -86,7 +85,7 @@ export class BitStream {
         this.buffer = buffer;
         this.bitindex = bitindex;
         this.index = index;
-        };
+    }
    
     public finish () {
         let buffer = this.buffer;
