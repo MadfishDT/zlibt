@@ -22,12 +22,12 @@ module.exports = {
     },
     plugins: [
         new TypescriptDeclarationPlugin({
-          out: 'zip.dev.js.d.ts'
+          out: 'zip.prod.d.ts'
         })
     ],
     output: {
-        filename: 'zip.dev.js',
+        filename: 'zip.prod.js',
         libraryTarget: 'commonjs',
-        path: path.resolve(__dirname, '../../dist/dev')
+        path: path.resolve(__dirname, '../../dist/prod')
     }
 };

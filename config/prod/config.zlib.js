@@ -22,7 +22,7 @@ module.exports = {
     },
     plugins: [
         new DtsBundleWebpack({
-            name: 'zlib.dev',
+            name: 'zlib.prod',
             main: '../../dist/debug/zlib.d.ts'
         })
     ],

@@ -22,12 +22,12 @@ module.exports = {
     },
     plugins: [
         new TypescriptDeclarationPlugin({
-          out: 'raw.dev.d.ts'
+          out: 'raw.prod.d.ts'
         })
     ],
     output: {
-        filename: 'raw.dev.js',
+        filename: 'raw.prod.js',
         libraryTarget: 'commonjs',
-        path: path.resolve(__dirname, '../../dist/dev')
+        path: path.resolve(__dirname, '../../dist/prod')
     }
 };

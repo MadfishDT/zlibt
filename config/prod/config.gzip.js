@@ -22,12 +22,12 @@ module.exports = {
     },
     plugins: [
         new TypescriptDeclarationPlugin({
-          out: 'gzip_gunzip.dev.d.ts'
+          out: 'gzip_gunzip.prod.d.ts'
         })
     ],
     output: {
-        filename: 'gzip_gunzip.dev.js',
+        filename: 'gzip_gunzip.prod.js',
         libraryTarget: 'commonjs',
-        path: path.resolve(__dirname, '../../dist/dev')
+        path: path.resolve(__dirname, '../../dist/prod')
     }
 };
