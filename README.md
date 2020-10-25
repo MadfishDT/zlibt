@@ -26,6 +26,33 @@ npm inatall zlibt
     * inflate_stream.min.js: ZLIB Inflate (stream mode)
     * command line argument support(~0.0.2)
 
+**build**
+-
+* DEV mode build
+    * all mode buid: 
+        ```
+        npm run build:
+        ```
+    * gzip partial build: 
+        ```
+        build:gzip:dev
+        ```
+    * zip partial build:  
+        ```
+        build:zip:dev
+        ```
+    * zlib partial build:
+        ```
+        build:zlib:dev
+         ``` 
+    * raw partial build: 
+        ```
+        build:raw:dev
+        ```
+
+* Production mode build
+    * production build support, just change dev->prod
+
 **dependency:**
 -
 * APIS

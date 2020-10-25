@@ -1,6 +1,6 @@
 {
   "name": "zlibt",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "typescript zlib",
   "main": "dist/zlibt.js",
   "bin": "bin/bin.js",
@@ -19,6 +19,7 @@
     "build:zlib:dev": "npm run clear:dev & webpack --config config/dev/dev.config.zlib.js --watch",
     "build:raw:dev": "npm run clear:dev & webpack --config config/dev/dev.config.raw.js --watch",
     "clear:dev":"del-cli --force ./dist/dev",
+    "clear:prod":"del-cli --force ./dist/prod",
     "lint": "tslint --project tsconfig.json src/*",
     "lint:fix": "tslint --project tsconfig.json src/* --fix"
   },

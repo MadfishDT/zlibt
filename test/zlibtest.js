@@ -1,4 +1,4 @@
-const Zlib = require('../dist/prod/zlibt');
+const Zlib = require('../dist/dev/zlibt.dev');
 
 const datas = [1, 2, 3, 4, 5, 6];
 console.log(`input data: ${datas}`);
@@ -12,7 +12,4 @@ var resultArray = Array.from(plain);
 console.log(`result: ${resultArray}`);
 
 var gzip = new Zlib.Gzip(datas);
-var compressed = gzip.compress();
-
-var gunzip = new Zlib.gunzip(datas);
 var compressed = gzip.compress();
