@@ -12,7 +12,7 @@ export class GunzipMember {
     public isize: number;
     public name: string;
     public comment: string;
-    public data: Uint8Array|Array<number>;
+    public data: Uint8Array | Array<number>;
 
     public getName() {
         return this.name;

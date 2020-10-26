@@ -27,13 +27,13 @@ export class InflateStream {
                 this.input = (<Array<number>>(this.input)).concat(<Array<number>>input);
             }
         }
-    
+
         if (this.method === void 0) {
-            if(this.readHeader() < 0) {
+            if (this.readHeader() < 0) {
                 return new (USE_TYPEDARRAY ? Uint8Array : Array)(null);
             }
         }
-    
+
         buffer = this.rawinflate.decompress(this.input, this.ip);
         if (this.rawinflate.ip !== 0) {
             this.input = USE_TYPEDARRAY ?
@@ -47,34 +47,34 @@ export class InflateStream {
     public readHeader() {
         let ip = this.ip;
         let input = this.input;
-    
+
         // Compression Method and Flags
         let cmf = input[ip++];
         let flg = input[ip++];
-    
+
         if (cmf === void 0 || flg === void 0) {
-        return -1;
+            return -1;
         }
-    
+
         // compression method
         switch (cmf & 0x0f) {
-        case CompressionMethod.DEFLATE:
-            this.method = CompressionMethod.DEFLATE;
-            break;
-        default:
-            throw new Error('unsupported compression method');
+            case CompressionMethod.DEFLATE:
+                this.method = CompressionMethod.DEFLATE;
+                break;
+            default:
+                throw new Error('unsupported compression method');
         }
-    
+
         // fcheck
         if (((cmf << 8) + flg) % 31 !== 0) {
-        throw new Error('invalid fcheck flag:' + ((cmf << 8) + flg) % 31);
+            throw new Error('invalid fcheck flag:' + ((cmf << 8) + flg) % 31);
         }
-    
+
         // fdict (not supported)
         if (flg & 0x20) {
-        throw new Error('fdict flag is not supported');
+            throw new Error('fdict flag is not supported');
         }
-    
+
         this.ip = ip;
     }
 }

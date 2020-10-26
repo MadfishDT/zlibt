@@ -7,6 +7,7 @@
   "types": "zlib_and_gzip.min.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "test:zlib": "node ./test/zlibtest.js",
     "start": "nodemon --watch src --delay 1 --exec ts-node src/zlibtest.ts",
     "build:prod": "webpack --config config/prod/config.js & webpack --config config/prod/config.umd.js",
     "build:prod:all": "npm run build:prod & npm run build:gzip:prod & npm run build:zip:prod & npm run build:raw:prod & npm run build:flate:prod",
@@ -29,6 +30,10 @@
     "gzip",
     "zip",
     "js",
+    "compress",
+    "self",
+    "tandalone",
+    "onlyjavascript",
     "typescript"
   ],
   "author": "MadfishDT",
