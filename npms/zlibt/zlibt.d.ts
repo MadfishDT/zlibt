@@ -11,10 +11,10 @@ export let ZLIB_CRC32_COMPACT: boolean;
 export class CRC32 {
     constructor();
     static calc(data: Array<number> | Uint8Array, pos?: number, length?: number): number;
-    static update: (data: Uint8Array | number[], crc: number, pos: number, length: number) => number;
+    static update: (data: Array<number> | Uint8Array, crc: number, pos: number, length: number) => number;
     static single(num: number, crc: number): number;
     static Table_: number[];
-    static readonly Table: any[] | Uint32Array;
+    static get Table(): any[] | Uint32Array;
 }
 
 export class Heap {
@@ -66,7 +66,7 @@ export class Zip {
     deflateWithOption(input: Array<number> | Uint8Array, opt_params: Object): Uint8Array | number[];
     static getByte(key: Array<number> | Uint32Array): number;
     encode(key: Array<number> | Uint32Array, n: number): number;
-    static updateKeys: (key: number[] | Uint32Array, n: number) => void;
+    static updateKeys: (key: Array<number> | Uint32Array, n: number) => void;
     static createEncryptionKey(password: Array<number> | Uint8Array): number[] | Uint32Array;
 }
 
@@ -322,7 +322,7 @@ export class Lz77Match {
     length: number;
     backwardDistance: number;
     constructor(length: number, backwardDistance: number);
-    static readonly LengthCodeTable: any[] | Uint32Array;
+    static get LengthCodeTable(): any[] | Uint32Array;
     getDistanceCode_(dist: number): any;
     toLz77Array(): any[];
 }
@@ -342,7 +342,7 @@ export class RawDeflate {
     static HUFMAX: number;
     static Lz77MinLength: number;
     constructor(input: Array<number> | Uint8Array, opt_params?: any);
-    static readonly FixedHuffmanTable: any[];
+    static get FixedHuffmanTable(): any[];
     compress(): Uint8Array | number[];
     makeNocompressBlock(blockArray: Array<number> | Uint8Array, isFinalBlock: boolean): Uint8Array | number[];
     makeFixedHuffmanBlock(blockArray: Array<number> | Uint8Array, isFinalBlock: boolean): any;

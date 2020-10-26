@@ -10,7 +10,7 @@ export class Lz77Match {
     length: number;
     backwardDistance: number;
     constructor(length: number, backwardDistance: number);
-    static readonly LengthCodeTable: any[] | Uint32Array;
+    static get LengthCodeTable(): any[] | Uint32Array;
     getDistanceCode_(dist: number): any;
     toLz77Array(): any[];
 }
@@ -30,7 +30,7 @@ export class RawDeflate {
     static HUFMAX: number;
     static Lz77MinLength: number;
     constructor(input: Array<number> | Uint8Array, opt_params?: any);
-    static readonly FixedHuffmanTable: any[];
+    static get FixedHuffmanTable(): any[];
     compress(): number[] | Uint8Array;
     makeNocompressBlock(blockArray: Array<number> | Uint8Array, isFinalBlock: boolean): number[] | Uint8Array;
     makeFixedHuffmanBlock(blockArray: Array<number> | Uint8Array, isFinalBlock: boolean): any;

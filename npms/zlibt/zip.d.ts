@@ -25,7 +25,7 @@ export class Zip {
     deflateWithOption(input: Array<number> | Uint8Array, opt_params: Object): number[] | Uint8Array;
     static getByte(key: Array<number> | Uint32Array): number;
     encode(key: Array<number> | Uint32Array, n: number): number;
-    static updateKeys: (key: number[] | Uint32Array, n: number) => void;
+    static updateKeys: (key: Array<number> | Uint32Array, n: number) => void;
     static createEncryptionKey(password: Array<number> | Uint8Array): number[] | Uint32Array;
 }
 

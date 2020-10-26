@@ -52,6 +52,45 @@ npm inatall zlibt2
 
 * there is no dependencies
 
+**build**
+-
+* Production mode build
+    * all mode buid: bundle module and umd bundle module
+        ```
+        npm run build:prod:
+        ```
+    * all and patial mode buid:  bundle module and umd bundle module, this build option build each modules too. output are 1 all module bundled package and each module bundle package
+        ```
+        npm run build:prod:all
+        ```
+    * partial module build: 
+        ```
+        build:[module name]:prod
+        /*module name can be 'gzip','zip','raw','flate'*/
+        ```
+* Development mode build(developing mode with file watch)
+
+        ```
+        build:dev
+        ```
+
+* package.json configration to **deply**
+    * to deploy with package.json, you should change content in /npms/zlibt/package.json
+    * /package.json file is not package config for deploy to npm package site
+
+**deploy script**
+-
+    
+* to deply source, you have to run pre-deploy script, this script aggregate source code that is in npm packages
+
+    ```
+        npm run predeploy:prod
+    ```
+* this script run './deploy/zlibt.js'
+
+* Production mode build
+    * production build support, just change dev->prod
+
 **ZLib APIS**
 -
 * Zlib TypeScript
@@ -262,7 +301,7 @@ npm inatall zlibt2
     6. 'crc32'
     7. 'compressedSize'
     8. 'plainSize'
-    9. internalFileAttributes'
+    9. 'internalFileAttributes'
     10. 'externalFileAttributes'
 
     * how to get file permission number like '0o777'
