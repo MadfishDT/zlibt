@@ -8,7 +8,7 @@
 **install**
 -
 ```
-npm inatall zlibt2
+npm install zlibt2
 ```
 
 **support features:**
