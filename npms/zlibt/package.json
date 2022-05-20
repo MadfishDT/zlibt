@@ -1,6 +1,6 @@
 {
     "name": "zlibt2",
-    "version": "0.5.1",
+    "version": "0.5.2",
     "description": "zlib libray support typescript",
     "main": "zlibt.js",
     "types": "zlibt.d.ts",
