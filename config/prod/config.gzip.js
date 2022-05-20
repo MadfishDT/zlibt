@@ -2,6 +2,7 @@ const path = require('path');
 const DtsBundleWebpack = require('dts-bundle-webpack');
 
 module.exports = {
+    mode: 'production',
     entry: './src/gzip_gunzip.ts',
     module: {
         rules: [

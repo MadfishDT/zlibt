@@ -1,5 +1,6 @@
 const path = require('path');
 module.exports = {
+    mode: 'production',
     entry: './src/zlibt.ts',
     module: {
         rules: [

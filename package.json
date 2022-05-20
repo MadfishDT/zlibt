@@ -1,6 +1,6 @@
 {
   "name": "zlibt",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "typescript zlib",
   "main": "dist/zlibt.js",
   "bin": "bin/bin.js",
@@ -43,17 +43,17 @@
   },
   "homepage": "https://madfishdt.github.io",
   "devDependencies": {
-    "codelyzer": "^6.0.1",
+    "codelyzer": "^6.0.2",
     "dts-bundle-webpack": "^1.0.2",
-    "eslint": "^7.12.0",
-    "nodemon": "^2.0.6",
+    "eslint": "^8.15.0",
+    "nodemon": "^2.0.16",
     "npm-run-all": "^4.1.5",
-    "source-map-support": "^0.5.19",
-    "ts-loader": "^8.0.7",
-    "ts-node": "^9.0.0",
-    "typescript": "^4.0.3",
-    "webpack": "^4.44.2",
-    "webpack-cli": "^4.1.0"
+    "source-map-support": "^0.5.21",
+    "ts-loader": "^9.3.0",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.4",
+    "webpack": "^5.72.1",
+    "webpack-cli": "^4.9.2"
   },
   "dependencies": {}
 }
