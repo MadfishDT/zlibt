@@ -2,6 +2,7 @@ const path = require('path');
 const DtsBundleWebpack = require('dts-bundle-webpack')
 module.exports = {
     entry: './src/zlibt.ts',
+    mode: 'development',
     module: {
         rules: [
         {
