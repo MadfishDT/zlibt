@@ -46,7 +46,7 @@
     "codelyzer": "^6.0.2",
     "dts-bundle-webpack": "^1.0.2",
     "eslint": "^8.15.0",
-    "nodemon": "^2.0.16",
+    "nodemon": "^2.0.20",
     "npm-run-all": "^4.1.5",
     "source-map-support": "^0.5.21",
     "ts-loader": "^9.3.0",
