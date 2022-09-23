@@ -162,9 +162,9 @@ export class Unzip {
     searchEndOfCentralDirectoryRecord(): void;
     parseEndOfCentralDirectoryRecord(): void;
     parseFileHeader(): void;
-    getFileData(index: number, opt_params: any): any;
+    getFileData(index: number, opt_params?: any): any;
     getFilenames(): any[];
-    decompress(filename: string, opt_params: any): any;
+    decompress(filename: string, opt_params?: any): any;
     /**
       * @param {(Array.<number>|Uint8Array)} password
       */
