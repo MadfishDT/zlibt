@@ -1,13 +1,13 @@
-import { USE_TYPEDARRAY } from './define/typedarray/hybrid';
-import { BitStream } from './bitstream';
-import { Heap } from './heap';
+import { USE_TYPEDARRAY } from "./define/typedarray/hybrid";
+import { BitStream } from "./bitstream";
+import { Heap } from "./heap";
 
 export enum CompressionType {
     NONE = 0,
     FIXED = 1,
     DYNAMIC = 2,
-    RESERVED = 3
-};
+    RESERVED = 3,
+}
 
 export class Lz77Match {
     public length: number;
@@ -21,38 +21,97 @@ export class Lz77Match {
     static get LengthCodeTable() {
         const code = (length: number) => {
             switch (true) {
-                case (length === 3): return [257, length - 3, 0]; break;
-                case (length === 4): return [258, length - 4, 0]; break;
-                case (length === 5): return [259, length - 5, 0]; break;
-                case (length === 6): return [260, length - 6, 0]; break;
-                case (length === 7): return [261, length - 7, 0]; break;
-                case (length === 8): return [262, length - 8, 0]; break;
-                case (length === 9): return [263, length - 9, 0]; break;
-                case (length === 10): return [264, length - 10, 0]; break;
-                case (length <= 12): return [265, length - 11, 1]; break;
-                case (length <= 14): return [266, length - 13, 1]; break;
-                case (length <= 16): return [267, length - 15, 1]; break;
-                case (length <= 18): return [268, length - 17, 1]; break;
-                case (length <= 22): return [269, length - 19, 2]; break;
-                case (length <= 26): return [270, length - 23, 2]; break;
-                case (length <= 30): return [271, length - 27, 2]; break;
-                case (length <= 34): return [272, length - 31, 2]; break;
-                case (length <= 42): return [273, length - 35, 3]; break;
-                case (length <= 50): return [274, length - 43, 3]; break;
-                case (length <= 58): return [275, length - 51, 3]; break;
-                case (length <= 66): return [276, length - 59, 3]; break;
-                case (length <= 82): return [277, length - 67, 4]; break;
-                case (length <= 98): return [278, length - 83, 4]; break;
-                case (length <= 114): return [279, length - 99, 4]; break;
-                case (length <= 130): return [280, length - 115, 4]; break;
-                case (length <= 162): return [281, length - 131, 5]; break;
-                case (length <= 194): return [282, length - 163, 5]; break;
-                case (length <= 226): return [283, length - 195, 5]; break;
-                case (length <= 257): return [284, length - 227, 5]; break;
-                case (length === 258): return [285, length - 258, 0]; break;
-                default: throw 'invalid length: ' + length;
+                case length === 3:
+                    return [257, length - 3, 0];
+                    break;
+                case length === 4:
+                    return [258, length - 4, 0];
+                    break;
+                case length === 5:
+                    return [259, length - 5, 0];
+                    break;
+                case length === 6:
+                    return [260, length - 6, 0];
+                    break;
+                case length === 7:
+                    return [261, length - 7, 0];
+                    break;
+                case length === 8:
+                    return [262, length - 8, 0];
+                    break;
+                case length === 9:
+                    return [263, length - 9, 0];
+                    break;
+                case length === 10:
+                    return [264, length - 10, 0];
+                    break;
+                case length <= 12:
+                    return [265, length - 11, 1];
+                    break;
+                case length <= 14:
+                    return [266, length - 13, 1];
+                    break;
+                case length <= 16:
+                    return [267, length - 15, 1];
+                    break;
+                case length <= 18:
+                    return [268, length - 17, 1];
+                    break;
+                case length <= 22:
+                    return [269, length - 19, 2];
+                    break;
+                case length <= 26:
+                    return [270, length - 23, 2];
+                    break;
+                case length <= 30:
+                    return [271, length - 27, 2];
+                    break;
+                case length <= 34:
+                    return [272, length - 31, 2];
+                    break;
+                case length <= 42:
+                    return [273, length - 35, 3];
+                    break;
+                case length <= 50:
+                    return [274, length - 43, 3];
+                    break;
+                case length <= 58:
+                    return [275, length - 51, 3];
+                    break;
+                case length <= 66:
+                    return [276, length - 59, 3];
+                    break;
+                case length <= 82:
+                    return [277, length - 67, 4];
+                    break;
+                case length <= 98:
+                    return [278, length - 83, 4];
+                    break;
+                case length <= 114:
+                    return [279, length - 99, 4];
+                    break;
+                case length <= 130:
+                    return [280, length - 115, 4];
+                    break;
+                case length <= 162:
+                    return [281, length - 131, 5];
+                    break;
+                case length <= 194:
+                    return [282, length - 163, 5];
+                    break;
+                case length <= 226:
+                    return [283, length - 195, 5];
+                    break;
+                case length <= 257:
+                    return [284, length - 227, 5];
+                    break;
+                case length === 258:
+                    return [285, length - 258, 0];
+                    break;
+                default:
+                    throw "invalid length: " + length;
             }
-        }
+        };
 
         let table = [];
         let i = 0;
@@ -69,43 +128,103 @@ export class Lz77Match {
         /** @type {!Array.<number>} distance code table. */
         let r;
         switch (true) {
-            case (dist === 1): r = [0, dist - 1, 0]; break;
-            case (dist === 2): r = [1, dist - 2, 0]; break;
-            case (dist === 3): r = [2, dist - 3, 0]; break;
-            case (dist === 4): r = [3, dist - 4, 0]; break;
-            case (dist <= 6): r = [4, dist - 5, 1]; break;
-            case (dist <= 8): r = [5, dist - 7, 1]; break;
-            case (dist <= 12): r = [6, dist - 9, 2]; break;
-            case (dist <= 16): r = [7, dist - 13, 2]; break;
-            case (dist <= 24): r = [8, dist - 17, 3]; break;
-            case (dist <= 32): r = [9, dist - 25, 3]; break;
-            case (dist <= 48): r = [10, dist - 33, 4]; break;
-            case (dist <= 64): r = [11, dist - 49, 4]; break;
-            case (dist <= 96): r = [12, dist - 65, 5]; break;
-            case (dist <= 128): r = [13, dist - 97, 5]; break;
-            case (dist <= 192): r = [14, dist - 129, 6]; break;
-            case (dist <= 256): r = [15, dist - 193, 6]; break;
-            case (dist <= 384): r = [16, dist - 257, 7]; break;
-            case (dist <= 512): r = [17, dist - 385, 7]; break;
-            case (dist <= 768): r = [18, dist - 513, 8]; break;
-            case (dist <= 1024): r = [19, dist - 769, 8]; break;
-            case (dist <= 1536): r = [20, dist - 1025, 9]; break;
-            case (dist <= 2048): r = [21, dist - 1537, 9]; break;
-            case (dist <= 3072): r = [22, dist - 2049, 10]; break;
-            case (dist <= 4096): r = [23, dist - 3073, 10]; break;
-            case (dist <= 6144): r = [24, dist - 4097, 11]; break;
-            case (dist <= 8192): r = [25, dist - 6145, 11]; break;
-            case (dist <= 12288): r = [26, dist - 8193, 12]; break;
-            case (dist <= 16384): r = [27, dist - 12289, 12]; break;
-            case (dist <= 24576): r = [28, dist - 16385, 13]; break;
-            case (dist <= 32768): r = [29, dist - 24577, 13]; break;
-            default: throw 'invalid distance';
+            case dist === 1:
+                r = [0, dist - 1, 0];
+                break;
+            case dist === 2:
+                r = [1, dist - 2, 0];
+                break;
+            case dist === 3:
+                r = [2, dist - 3, 0];
+                break;
+            case dist === 4:
+                r = [3, dist - 4, 0];
+                break;
+            case dist <= 6:
+                r = [4, dist - 5, 1];
+                break;
+            case dist <= 8:
+                r = [5, dist - 7, 1];
+                break;
+            case dist <= 12:
+                r = [6, dist - 9, 2];
+                break;
+            case dist <= 16:
+                r = [7, dist - 13, 2];
+                break;
+            case dist <= 24:
+                r = [8, dist - 17, 3];
+                break;
+            case dist <= 32:
+                r = [9, dist - 25, 3];
+                break;
+            case dist <= 48:
+                r = [10, dist - 33, 4];
+                break;
+            case dist <= 64:
+                r = [11, dist - 49, 4];
+                break;
+            case dist <= 96:
+                r = [12, dist - 65, 5];
+                break;
+            case dist <= 128:
+                r = [13, dist - 97, 5];
+                break;
+            case dist <= 192:
+                r = [14, dist - 129, 6];
+                break;
+            case dist <= 256:
+                r = [15, dist - 193, 6];
+                break;
+            case dist <= 384:
+                r = [16, dist - 257, 7];
+                break;
+            case dist <= 512:
+                r = [17, dist - 385, 7];
+                break;
+            case dist <= 768:
+                r = [18, dist - 513, 8];
+                break;
+            case dist <= 1024:
+                r = [19, dist - 769, 8];
+                break;
+            case dist <= 1536:
+                r = [20, dist - 1025, 9];
+                break;
+            case dist <= 2048:
+                r = [21, dist - 1537, 9];
+                break;
+            case dist <= 3072:
+                r = [22, dist - 2049, 10];
+                break;
+            case dist <= 4096:
+                r = [23, dist - 3073, 10];
+                break;
+            case dist <= 6144:
+                r = [24, dist - 4097, 11];
+                break;
+            case dist <= 8192:
+                r = [25, dist - 6145, 11];
+                break;
+            case dist <= 12288:
+                r = [26, dist - 8193, 12];
+                break;
+            case dist <= 16384:
+                r = [27, dist - 12289, 12];
+                break;
+            case dist <= 24576:
+                r = [28, dist - 16385, 13];
+                break;
+            case dist <= 32768:
+                r = [29, dist - 24577, 13];
+                break;
+            default:
+                throw "invalid distance";
         }
         return r;
     }
 
     public toLz77Array() {
-
         let length = this.length;
         let dist = this.backwardDistance;
         let codeArray = [];
@@ -129,7 +248,7 @@ export class Lz77Match {
 }
 
 export class RawDeflate {
-    //public static CompressionType = gCompressionType; 
+    //public static CompressionType = gCompressionType;
     public compressionType: CompressionType;
     public lazy: number;
     public freqsLitLen: Array<any> | Uint32Array;
@@ -156,23 +275,27 @@ export class RawDeflate {
         this.length = 0;
         this.backwardDistance = 0;
         this.input =
-            (USE_TYPEDARRAY && input instanceof Array) ? new Uint8Array(input) : input;
+            USE_TYPEDARRAY && input instanceof Array
+                ? new Uint8Array(input)
+                : input;
         this.op = 0;
         // option parameters
         if (opt_params) {
-            if (opt_params['lazy']) {
-                this.lazy = opt_params['lazy'];
+            if (opt_params["lazy"]) {
+                this.lazy = opt_params["lazy"];
             }
-            if (typeof opt_params['compressionType'] === 'number') {
-                this.compressionType = opt_params['compressionType'];
+            if (typeof opt_params["compressionType"] === "number") {
+                this.compressionType = opt_params["compressionType"];
             }
-            if (opt_params['outputBuffer']) {
+            if (opt_params["outputBuffer"]) {
                 this.output =
-                    (USE_TYPEDARRAY && opt_params['outputBuffer'] instanceof Array) ?
-                        new Uint8Array(opt_params['outputBuffer']) : opt_params['outputBuffer'];
+                    USE_TYPEDARRAY &&
+                    opt_params["outputBuffer"] instanceof Array
+                        ? new Uint8Array(opt_params["outputBuffer"])
+                        : opt_params["outputBuffer"];
             }
-            if (typeof opt_params['outputIndex'] === 'number') {
-                this.op = opt_params['outputIndex'];
+            if (typeof opt_params["outputIndex"] === "number") {
+                this.op = opt_params["outputIndex"];
             }
         }
         if (!this.output) {
@@ -181,16 +304,25 @@ export class RawDeflate {
     }
 
     public static get FixedHuffmanTable() {
-        let table = [], i;
+        let table = [],
+            i;
 
         for (i = 0; i < 288; i++) {
             switch (true) {
-                case (i <= 143): table.push([i + 0x030, 8]); break;
-                case (i <= 255): table.push([i - 144 + 0x190, 9]); break;
-                case (i <= 279): table.push([i - 256 + 0x000, 7]); break;
-                case (i <= 287): table.push([i - 280 + 0x0C0, 8]); break;
+                case i <= 143:
+                    table.push([i + 0x030, 8]);
+                    break;
+                case i <= 255:
+                    table.push([i - 144 + 0x190, 9]);
+                    break;
+                case i <= 279:
+                    table.push([i - 256 + 0x000, 7]);
+                    break;
+                case i <= 287:
+                    table.push([i - 280 + 0x0c0, 8]);
+                    break;
                 default:
-                    throw 'invalid literal: ' + i;
+                    throw "invalid literal: " + i;
             }
         }
         return table;
@@ -205,12 +337,15 @@ export class RawDeflate {
         switch (this.compressionType) {
             case CompressionType.NONE:
                 // each 65535-Byte (length header: 16-bit)
-                for (position = 0, length = input.length; position < length;) {
-                    blockArray = USE_TYPEDARRAY ?
-                        (<Uint8Array>input).subarray(position, position + 0xffff) :
-                        input.slice(position, position + 0xffff);
+                for (position = 0, length = input.length; position < length; ) {
+                    blockArray = USE_TYPEDARRAY
+                        ? (<Uint8Array>input).subarray(
+                              position,
+                              position + 0xffff
+                          )
+                        : input.slice(position, position + 0xffff);
                     position += blockArray.length;
-                    this.makeNocompressBlock(blockArray, (position === length));
+                    this.makeNocompressBlock(blockArray, position === length);
                 }
                 break;
             case CompressionType.FIXED:
@@ -222,12 +357,15 @@ export class RawDeflate {
                 this.op = this.output.length;
                 break;
             default:
-                throw 'invalid compression type';
+                throw "invalid compression type";
         }
         return this.output;
     }
 
-    public makeNocompressBlock(blockArray: Array<number> | Uint8Array, isFinalBlock: boolean) {
+    public makeNocompressBlock(
+        blockArray: Array<number> | Uint8Array,
+        isFinalBlock: boolean
+    ) {
         let bfinal;
         let btype;
         let len;
@@ -250,7 +388,7 @@ export class RawDeflate {
         // header
         bfinal = isFinalBlock ? 1 : 0;
         btype = CompressionType.NONE;
-        output[op++] = (bfinal) | (btype << 1);
+        output[op++] = bfinal | (btype << 1);
 
         // length
         len = blockArray.length;
@@ -278,10 +416,17 @@ export class RawDeflate {
         return output;
     }
 
-    public makeFixedHuffmanBlock(blockArray: Array<number> | Uint8Array, isFinalBlock: boolean) {
+    public makeFixedHuffmanBlock(
+        blockArray: Array<number> | Uint8Array,
+        isFinalBlock: boolean
+    ) {
         /** @type {Zlib.BitStream} */
-        let stream = new BitStream(USE_TYPEDARRAY ?
-            new Uint8Array((<Uint8Array>this.output).buffer) : this.output, this.op);
+        let stream = new BitStream(
+            USE_TYPEDARRAY
+                ? new Uint8Array((<Uint8Array>this.output).buffer)
+                : this.output,
+            this.op
+        );
         /** @type {number} */
         let bfinal;
         /** @type {Zlib.RawDeflate.CompressionType} */
@@ -302,17 +447,25 @@ export class RawDeflate {
         return stream.finish();
     }
 
-    public makeDynamicHuffmanBlock(blockArray: Array<number> | Uint8Array, isFinalBlock: boolean) {
-        let stream = new BitStream(USE_TYPEDARRAY ?
-            new Uint8Array((<Uint8Array>this.output).buffer) : this.output, this.op);
+    public makeDynamicHuffmanBlock(
+        blockArray: Array<number> | Uint8Array,
+        isFinalBlock: boolean
+    ) {
+        let stream = new BitStream(
+            USE_TYPEDARRAY
+                ? new Uint8Array((<Uint8Array>this.output).buffer)
+                : this.output,
+            this.op
+        );
         let bfinal;
         let btype;
         let data;
         let hlit;
         let hdist;
         let hclen;
-        let hclenOrder =
-            [16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15];
+        let hclenOrder = [
+            16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15,
+        ];
         let litLenLengths;
         let litLenCodes;
         let distLengths;
@@ -340,17 +493,21 @@ export class RawDeflate {
         distLengths = this.getLengths_(this.freqsDist, 7);
         distCodes = this.getCodesFromLengths_(distLengths);
 
-        for (hlit = 286; hlit > 257 && litLenLengths[hlit - 1] === 0; hlit--) { }
-        for (hdist = 30; hdist > 1 && distLengths[hdist - 1] === 0; hdist--) { }
+        for (hlit = 286; hlit > 257 && litLenLengths[hlit - 1] === 0; hlit--) {}
+        for (hdist = 30; hdist > 1 && distLengths[hdist - 1] === 0; hdist--) {}
 
         // HCLEN
-        treeSymbols =
-            this.getTreeSymbols_(hlit, litLenLengths, hdist, distLengths);
+        treeSymbols = this.getTreeSymbols_(
+            hlit,
+            litLenLengths,
+            hdist,
+            distLengths
+        );
         treeLengths = this.getLengths_(treeSymbols.freqs, 7);
         for (i = 0; i < 19; i++) {
             transLengths[i] = treeLengths[hclenOrder[i]];
         }
-        for (hclen = 19; hclen > 4 && transLengths[hclen - 1] === 0; hclen--) { }
+        for (hclen = 19; hclen > 4 && transLengths[hclen - 1] === 0; hclen--) {}
 
         treeCodes = this.getCodesFromLengths_(treeLengths);
 
@@ -370,11 +527,17 @@ export class RawDeflate {
             if (code >= 16) {
                 i++;
                 switch (code) {
-                    case 16: bitlen = 2; break;
-                    case 17: bitlen = 3; break;
-                    case 18: bitlen = 7; break;
+                    case 16:
+                        bitlen = 2;
+                        break;
+                    case 17:
+                        bitlen = 3;
+                        break;
+                    case 18:
+                        bitlen = 7;
+                        break;
                     default:
-                        throw 'invalid code: ' + code;
+                        throw "invalid code: " + code;
                 }
 
                 stream.writeBits(treeSymbols.codes[i], bitlen, true);
@@ -391,7 +554,12 @@ export class RawDeflate {
         return stream.finish();
     }
 
-    public dynamicHuffman(dataArray: Array<number> | Uint16Array, litLen: any[], dist: any[], stream: any) {
+    public dynamicHuffman(
+        dataArray: Array<number> | Uint16Array,
+        litLen: any[],
+        dist: any[],
+        stream: any
+    ) {
         let index;
         let length;
         let literal;
@@ -411,7 +579,11 @@ export class RawDeflate {
             literal = dataArray[index];
 
             // literal or length
-            stream.writeBits(litLenCodes[literal], litLenLengths[literal], true);
+            stream.writeBits(
+                litLenCodes[literal],
+                litLenLengths[literal],
+                true
+            );
 
             // 長さ・距離符号
             if (literal > 256) {
@@ -431,8 +603,10 @@ export class RawDeflate {
         return stream;
     }
 
-    public fixedHuffman(dataArray: Array<number> | Uint16Array, stream: BitStream) {
-
+    public fixedHuffman(
+        dataArray: Array<number> | Uint16Array,
+        stream: BitStream
+    ) {
         let index;
         let length;
         let literal;
@@ -440,8 +614,9 @@ export class RawDeflate {
         for (index = 0, length = dataArray.length; index < length; index++) {
             literal = dataArray[index];
             BitStream.prototype.writeBits.apply(
-                stream, RawDeflate.FixedHuffmanTable[literal]
-            )
+                stream,
+                RawDeflate.FixedHuffmanTable[literal]
+            );
             if (literal > 0x100) {
                 stream.writeBits(dataArray[++index], dataArray[++index], true);
                 stream.writeBits(dataArray[++index], 5);
@@ -464,8 +639,9 @@ export class RawDeflate {
         let matchsList = [];
         let longestMatch;
         let prevMatch;
-        let lz77buf = USE_TYPEDARRAY ?
-            new Uint16Array(dataArray.length * 2) : new Array<number>();
+        let lz77buf = USE_TYPEDARRAY
+            ? new Uint16Array(dataArray.length * 2)
+            : new Array<number>();
         let pos = 0;
         let skipLength = 0;
         let freqsLitLen = new (USE_TYPEDARRAY ? Uint32Array : Array)(286);
@@ -474,8 +650,12 @@ export class RawDeflate {
         let tmp;
 
         if (!USE_TYPEDARRAY) {
-            for (i = 0; i <= 285;) { freqsLitLen[i++] = 0; }
-            for (i = 0; i <= 29;) { freqsDist[i++] = 0; }
+            for (i = 0; i <= 285; ) {
+                freqsLitLen[i++] = 0;
+            }
+            for (i = 0; i <= 29; ) {
+                freqsDist[i++] = 0;
+            }
         }
         freqsLitLen[256] = 1;
         const writeMatch = (match: Lz77Match, offset: number) => {
@@ -488,10 +668,18 @@ export class RawDeflate {
             freqsDist[lz77Array[3]]++;
             skipLength = match.length + offset - 1;
             prevMatch = null;
-        }
+        };
 
-        for (position = 0, length = dataArray.length; position < length; ++position) {
-            for (matchKey = 0, i = 0, il = RawDeflate.Lz77MinLength; i < il; ++i) {
+        for (
+            position = 0, length = dataArray.length;
+            position < length;
+            ++position
+        ) {
+            for (
+                matchKey = 0, i = 0, il = RawDeflate.Lz77MinLength;
+                i < il;
+                ++i
+            ) {
                 if (position + i === length) {
                     break;
                 }
@@ -509,7 +697,10 @@ export class RawDeflate {
                 matchsList.push(position);
                 continue;
             }
-            while (matchsList.length > 0 && position - matchsList[0] > windowSize) {
+            while (
+                matchsList.length > 0 &&
+                position - matchsList[0] > windowSize
+            ) {
                 matchsList.shift();
             }
 
@@ -527,7 +718,11 @@ export class RawDeflate {
             }
 
             if (matchsList.length > 0) {
-                longestMatch = this.searchLongestMatch_(dataArray, position, matchsList);
+                longestMatch = this.searchLongestMatch_(
+                    dataArray,
+                    position,
+                    matchsList
+                );
                 if (prevMatch) {
                     if (prevMatch.length < longestMatch.length) {
                         // write previous literal
@@ -562,19 +757,26 @@ export class RawDeflate {
         this.freqsLitLen = freqsLitLen;
         this.freqsDist = freqsDist;
 
-        return /** @type {!(Uint16Array|Array.<number>)} */ (
-            USE_TYPEDARRAY ? (<Uint16Array>lz77buf).subarray(0, pos) : lz77buf
-        );
+        return /** @type {!(Uint16Array|Array.<number>)} */ USE_TYPEDARRAY
+            ? (<Uint16Array>lz77buf).subarray(0, pos)
+            : lz77buf;
     }
 
-    public searchLongestMatch_(data: any, position: number, matchList: Array<number>) {
+    public searchLongestMatch_(
+        data: any,
+        position: number,
+        matchList: Array<number>
+    ) {
         let match,
             currentMatch,
-            matchMax = 0, matchLength,
-            i, j, l, dl = data.length;
+            matchMax = 0,
+            matchLength,
+            i,
+            j,
+            l,
+            dl = data.length;
 
-        permatch:
-        for (i = 0, l = matchList.length; i < l; i++) {
+        permatch: for (i = 0, l = matchList.length; i < l; i++) {
             match = matchList[l - i - 1];
             matchLength = RawDeflate.Lz77MinLength;
 
@@ -587,9 +789,11 @@ export class RawDeflate {
                 matchLength = matchMax;
             }
 
-            while (matchLength < RawDeflate.Lz77MaxLength &&
+            while (
+                matchLength < RawDeflate.Lz77MaxLength &&
                 position + matchLength < dl &&
-                data[match + matchLength] === data[position + matchLength]) {
+                data[match + matchLength] === data[position + matchLength]
+            ) {
                 ++matchLength;
             }
 
@@ -605,13 +809,17 @@ export class RawDeflate {
         return new Lz77Match(matchMax, position - currentMatch);
     }
 
-    public getTreeSymbols_(hlit: number,
+    public getTreeSymbols_(
+        hlit: number,
         litlenLengths: Array<number> | Uint8Array,
         hdist: number,
-        distLengths: Array<number> | Uint8Array) {
-
+        distLengths: Array<number> | Uint8Array
+    ) {
         let src = new (USE_TYPEDARRAY ? Uint32Array : Array)(hlit + hdist),
-            i, j, runLength, l,
+            i,
+            j,
+            runLength,
+            l,
             result = new (USE_TYPEDARRAY ? Uint32Array : Array)(286 + 30),
             nResult,
             rpt,
@@ -633,7 +841,7 @@ export class RawDeflate {
 
         nResult = 0;
         for (i = 0, l = src.length; i < l; i += j) {
-            for (j = 1; i + j < l && src[i + j] === src[i]; ++j) { }
+            for (j = 1; i + j < l && src[i + j] === src[i]; ++j) {}
 
             runLength = j;
 
@@ -645,7 +853,7 @@ export class RawDeflate {
                     }
                 } else {
                     while (runLength > 0) {
-                        rpt = (runLength < 138 ? runLength : 138);
+                        rpt = runLength < 138 ? runLength : 138;
 
                         if (rpt > runLength - 3 && rpt < runLength) {
                             rpt = runLength - 3;
@@ -676,7 +884,7 @@ export class RawDeflate {
                     }
                 } else {
                     while (runLength > 0) {
-                        rpt = (runLength < 6 ? runLength : 6);
+                        rpt = runLength < 6 ? runLength : 6;
 
                         if (rpt > runLength - 3 && rpt < runLength) {
                             rpt = runLength - 3;
@@ -692,14 +900,17 @@ export class RawDeflate {
             }
         }
         return {
-            codes:
-                USE_TYPEDARRAY ? (<Uint32Array>result).subarray(0, nResult) : result.slice(0, nResult),
-            freqs: freqs
+            codes: USE_TYPEDARRAY
+                ? (<Uint32Array>result).subarray(0, nResult)
+                : result.slice(0, nResult),
+            freqs: freqs,
         };
     }
 
-    public getLengths_(freqs: Array<number> | Uint8Array | Uint32Array, limit: number) {
-
+    public getLengths_(
+        freqs: Array<number> | Uint8Array | Uint32Array,
+        limit: number
+    ) {
         let nSymbols = freqs.length;
         let heap = new Heap(2 * RawDeflate.HUFMAX);
         let length = new (USE_TYPEDARRAY ? Uint8Array : Array)(nSymbols);
@@ -742,8 +953,11 @@ export class RawDeflate {
         return length;
     }
 
-    public reversePackageMerge_(freqs: Array<number> | Uint32Array, symbols: number, limit: number) {
-
+    public reversePackageMerge_(
+        freqs: Array<number> | Uint32Array,
+        symbols: number,
+        limit: number
+    ) {
         let minimumCost = new (USE_TYPEDARRAY ? Uint16Array : Array)(limit);
         let flag = new (USE_TYPEDARRAY ? Uint8Array : Array)(limit);
         let codeLength = new (USE_TYPEDARRAY ? Uint8Array : Array)(symbols);
@@ -752,7 +966,7 @@ export class RawDeflate {
         let currentPosition = new Array(limit);
 
         let excess = (1 << limit) - symbols;
-        let half = (1 << (limit - 1));
+        let half = 1 << (limit - 1);
         let i;
         let j;
         let t;
@@ -760,7 +974,6 @@ export class RawDeflate {
         let next;
 
         const takePackage = (index: number) => {
-
             let x = type[index][currentPosition[index]];
 
             if (x === symbols) {
@@ -771,7 +984,7 @@ export class RawDeflate {
             }
 
             ++currentPosition[index];
-        }
+        };
 
         minimumCost[limit - 1] = symbols;
 
@@ -783,7 +996,8 @@ export class RawDeflate {
                 excess -= half;
             }
             excess <<= 1;
-            minimumCost[limit - 2 - j] = (minimumCost[limit - 1 - j] / 2 | 0) + symbols;
+            minimumCost[limit - 2 - j] =
+                ((minimumCost[limit - 1 - j] / 2) | 0) + symbols;
         }
         minimumCost[0] = flag[0];
 
@@ -847,7 +1061,11 @@ export class RawDeflate {
         let codes = new (USE_TYPEDARRAY ? Uint16Array : Array)(lengths.length);
         let count: number[] = [];
         let startCode: number[] = [];
-        let code = 0, i, il, j, m;
+        let code = 0,
+            i,
+            il,
+            j,
+            m;
 
         // Count the codes of each length.
         for (i = 0, il = lengths.length; i < il; i++) {

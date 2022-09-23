@@ -1,11 +1,11 @@
-import { USE_TYPEDARRAY } from './define/typedarray/hybrid';
-import { Adler32 } from './adler32';
-import { RawDeflate, CompressionType } from './rawdeflate';
-import { CompressionMethod } from './define/compress';
+import { USE_TYPEDARRAY } from "./define/typedarray/hybrid";
+import { Adler32 } from "./adler32";
+import { RawDeflate, CompressionType } from "./rawdeflate";
+import { CompressionMethod } from "./define/compress";
 
 export class Deflate {
     public static compress(input: Array<number> | Uint8Array, opt_params: any) {
-        return (new Deflate(input, opt_params)).compress();
+        return new Deflate(input, opt_params).compress();
     }
     public static DefaultBufferSize = 0x8000;
     //public CompressionType = RawDeflate.CompressionType;
@@ -18,15 +18,16 @@ export class Deflate {
 
     constructor(input: Array<number> | Uint8Array, opt_params?: any) {
         this.input = input;
-        this.output =
-            new (USE_TYPEDARRAY ? Uint8Array : Array)(Deflate.DefaultBufferSize);
+        this.output = new (USE_TYPEDARRAY ? Uint8Array : Array)(
+            Deflate.DefaultBufferSize
+        );
         this.compressionType = CompressionType.DYNAMIC;
         this.rawDeflateOption = {};
 
         // option parameters
         if (opt_params) {
-            if (typeof opt_params['compressionType'] === 'number') {
-                this.compressionType = opt_params['compressionType'];
+            if (typeof opt_params["compressionType"] === "number") {
+                this.compressionType = opt_params["compressionType"];
             }
         }
 
@@ -38,7 +39,7 @@ export class Deflate {
             }
         }
         // set raw-deflate output buffer
-        this.rawDeflateOption['outputBuffer'] = this.output;
+        this.rawDeflateOption["outputBuffer"] = this.output;
         this.rawDeflate = new RawDeflate(this.input, this.rawDeflateOption);
     }
 
@@ -71,7 +72,7 @@ export class Deflate {
                 cinfo = Math.LOG2E * Math.log(RawDeflate.WindowSize) - 8;
                 break;
             default:
-                throw new Error('invalid compression method');
+                throw new Error("invalid compression method");
         }
         cmf = (cinfo << 4) | cm;
         output[pos++] = cmf;
@@ -80,17 +81,24 @@ export class Deflate {
         switch (cm) {
             case CompressionMethod.DEFLATE:
                 switch (this.compressionType) {
-                    case CompressionType.NONE: flevel = 0; break;
-                    case CompressionType.FIXED: flevel = 1; break;
-                    case CompressionType.DYNAMIC: flevel = 2; break;
-                    default: throw new Error('unsupported compression type');
+                    case CompressionType.NONE:
+                        flevel = 0;
+                        break;
+                    case CompressionType.FIXED:
+                        flevel = 1;
+                        break;
+                    case CompressionType.DYNAMIC:
+                        flevel = 2;
+                        break;
+                    default:
+                        throw new Error("unsupported compression type");
                 }
                 break;
             default:
-                throw new Error('invalid compression method');
+                throw new Error("invalid compression method");
         }
         flg = (flevel << 6) | (fdict << 5);
-        fcheck = 31 - (cmf * 256 + flg) % 31;
+        fcheck = 31 - ((cmf * 256 + flg) % 31);
         flg |= fcheck;
         output[pos++] = flg;
         // Adler-32 checksum
@@ -111,7 +119,7 @@ export class Deflate {
         output[pos++] = (adler >> 24) & 0xff;
         output[pos++] = (adler >> 16) & 0xff;
         output[pos++] = (adler >> 8) & 0xff;
-        output[pos++] = (adler) & 0xff;
+        output[pos++] = adler & 0xff;
         return output;
     }
 }
