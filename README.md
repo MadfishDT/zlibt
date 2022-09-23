@@ -182,10 +182,10 @@ npm install zlibt2
         const floatsAsByte = new Uint8Array(floats.buffer);
         console.log("number array to Uint8Array: ", floatsAsByte);
         // compress
-        const deflate = new Zlib.Deflate(floatsAsByte, { compressionType: 0 });
+        const deflate = new Deflate(floatsAsByte, { compressionType: 0 });
         const compress = deflate.compress();
         //decompress
-        const inflate = new Zlib.Inflate(compress);
+        const inflate = new Inflate(compress);
         const plain = inflate.decompress();
 
         const decombuffer = new Uint8Array(plain);
